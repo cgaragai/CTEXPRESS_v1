@@ -1,4 +1,4 @@
-package cl.android.trabajo.ctexpress;
+package cl.android.trabajo.ctexpress.Vista.Login;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import cl.android.trabajo.ctexpress.R;
 
 public class RecuperarClave extends AppCompatActivity {
 

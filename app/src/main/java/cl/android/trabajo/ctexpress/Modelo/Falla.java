@@ -1,4 +1,4 @@
-package cl.android.trabajo.ctexpress;
+package cl.android.trabajo.ctexpress.Modelo;
 
 /**
  * Created by Leonardo on 28-09-2017.

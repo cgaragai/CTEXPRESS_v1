@@ -1,4 +1,4 @@
-package cl.android.trabajo.ctexpress;
+package cl.android.trabajo.ctexpress.Vista.Login;
 
 import android.content.Intent;
 import android.graphics.Paint;
@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import cl.android.trabajo.ctexpress.Vista.Main.MainTecnico;
+import cl.android.trabajo.ctexpress.R;
 
 public class Login extends AppCompatActivity {
 
@@ -25,7 +28,7 @@ public class Login extends AppCompatActivity {
             EditText etRut = (EditText) findViewById(R.id.txtRut);
             String rut = etRut.getText().toString();
 
-            Intent intent = new Intent(this, Main.class);
+            Intent intent = new Intent(this, MainTecnico.class);
             intent.putExtra("rutUsuario", rut);
             startActivity(intent);
         }
