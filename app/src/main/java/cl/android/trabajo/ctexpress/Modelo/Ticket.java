@@ -9,15 +9,13 @@ public class Ticket {
     private String rutUsuario;
     private int codigoFalla;
     private String codigoEquipo;
-    private String codigoSala;
     private String detalle;
 
-    public Ticket(int codigoTicket, String rutUsuario, int codigoFalla, String codigoEquipo, String codigoSala, String detalle) {
+    public Ticket(int codigoTicket, String rutUsuario, int codigoFalla, String codigoEquipo, String detalle) {
         this.codigoTicket = codigoTicket;
         this.rutUsuario = rutUsuario;
         this.codigoFalla = codigoFalla;
         this.codigoEquipo = codigoEquipo;
-        this.codigoSala = codigoSala;
         this.detalle = detalle;
     }
 
@@ -51,14 +49,6 @@ public class Ticket {
 
     public void setCodigoEquipo(String codigoEquipo) {
         this.codigoEquipo = codigoEquipo;
-    }
-
-    public String getCodigoSala() {
-        return codigoSala;
-    }
-
-    public void setCodigoSala(String codigoSala) {
-        this.codigoSala = codigoSala;
     }
 
     public String getDetalle() {

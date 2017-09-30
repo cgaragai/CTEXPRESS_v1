@@ -14,36 +14,13 @@ import cl.android.trabajo.ctexpress.Modelo.Usuario;
  * Created by Elaps-Merlina on 29-09-2017.
  */
 
-public class MantenedorUsuario extends SQLiteOpenHelper{
+public class MantenedorUsuario{
 
-
-    private static final int VERSION_BASEDATOS = 1;
-    private static final String NOMBRE_BASEDATOS = "ctexpress.db";
-    private static final String TABLA_USUARIO = "CREATE TABLE usuario (rut TEXT PRIMARY KEY, "
-            + "nombre TEXT, apellido TEXT, correo TEXT, clave TEXT, tipo_usuario TEXT)";
-
-    public MantenedorUsuario(Context context) {
-        super(context, NOMBRE_BASEDATOS, null, VERSION_BASEDATOS);
-    }
-
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-
-        db.execSQL(TABLA_USUARIO);
-
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
-        db.execSQL("DROP TABLE IF EXISTS " + TABLA_USUARIO);
-        onCreate(db);
-
-    }
 
     public void insertarDatos(Usuario usuario){
 
-        SQLiteDatabase db = getWritableDatabase();//Ayuda a ejecutar consultas SQL
+        DB_Helper usuarioDB = new DB_Helper(this);
+        SQLiteDatabase db = usuarioDB.getWritableDatabase();//Ayuda a ejecutar consultas SQL
         if(db != null) {
 
             db.execSQL("INSERT INTO usuario "
@@ -63,7 +40,7 @@ public class MantenedorUsuario extends SQLiteOpenHelper{
 
     public void modificarDatos(Usuario usuario){
 
-        SQLiteDatabase db = getWritableDatabase();//Ayuda a ejecutar consultas SQL
+        SQLiteDatabase db = usuarioDB.getWritableDatabase();//Ayuda a ejecutar consultas SQL
         if(db != null) {
 
             db.execSQL("UPDATE usuario "

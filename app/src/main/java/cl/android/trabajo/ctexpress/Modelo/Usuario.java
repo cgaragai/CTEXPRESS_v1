@@ -12,9 +12,6 @@ public class Usuario {
     private String clave;
     private String tipoUsuario;
 
-    public Usuario(){
-
-    }
     public Usuario(String rut, String nombre, String apellido, String correo, String clave, String tipoUsuario) {
         this.rut = rut;
         this.nombre = nombre;
