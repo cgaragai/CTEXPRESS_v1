@@ -15,11 +15,11 @@ import cl.android.trabajo.ctexpress.Modelo.Usuario;
  */
 
 public class MantenedorUsuario{
-
+    private Context context = this.context;
 
     public void insertarDatos(Usuario usuario){
 
-        DB_Helper usuarioDB = new DB_Helper(this);
+        DB_Helper usuarioDB = new DB_Helper(context);
         SQLiteDatabase db = usuarioDB.getWritableDatabase();//Ayuda a ejecutar consultas SQL
         if(db != null) {
 
@@ -40,6 +40,7 @@ public class MantenedorUsuario{
 
     public void modificarDatos(Usuario usuario){
 
+        DB_Helper usuarioDB = new DB_Helper(context);
         SQLiteDatabase db = usuarioDB.getWritableDatabase();//Ayuda a ejecutar consultas SQL
         if(db != null) {
 
@@ -57,7 +58,8 @@ public class MantenedorUsuario{
 
     public void eliminarUsuario(String rut){
 
-        SQLiteDatabase db = getWritableDatabase();//Ayuda a ejecutar consultas SQL
+        DB_Helper usuarioDB = new DB_Helper(context);
+        SQLiteDatabase db = usuarioDB.getWritableDatabase();//Ayuda a ejecutar consultas SQL
         if(db != null) {
 
             db.execSQL("DELETE FROM usuario "
@@ -70,7 +72,8 @@ public class MantenedorUsuario{
 
     public List<Usuario> retornaUsuarios()
     {
-        SQLiteDatabase db= getWritableDatabase();
+        DB_Helper usuarioDB = new DB_Helper(context);
+        SQLiteDatabase db= usuarioDB.getWritableDatabase();
         List<Usuario> auxListaUsuario = new ArrayList<>();
 
         Cursor auxCursor = db.rawQuery("SELECT * FROM usuario;",null);
@@ -96,7 +99,8 @@ public class MantenedorUsuario{
 
     public Usuario buscarCliente(String rut)
     {
-        SQLiteDatabase db= getWritableDatabase();
+        DB_Helper usuarioDB = new DB_Helper(context);
+        SQLiteDatabase db = usuarioDB.getWritableDatabase();
         Usuario auxUsuario = new Usuario();
 
         Cursor auxCursor = db.rawQuery("SELECT * FROM usuario "
