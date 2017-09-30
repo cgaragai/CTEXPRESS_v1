@@ -82,7 +82,11 @@ public class MantenedorTicket {
 
     private Ticket setTicket(Cursor resultado){
         Ticket ticket = new Ticket();
-        ticket.setCodigoTicket(Integer.parseInt(resultado.getString(0)));
+        ticket.setCodigoTicket(resultado.getInt(0));
+        ticket.setRutUsuario(resultado.getString(1));
+        ticket.setCodigoFalla(resultado.getInt(2));
+        ticket.setCodigoEquipo(resultado.getString(3));
+        ticket.setDetalle(resultado.getString(4));
         return ticket;
     }
 
@@ -91,7 +95,7 @@ public class MantenedorTicket {
         valores.add(ticket.getRutUsuario());
         valores.add(Integer.toString(ticket.getCodigoFalla()));
         valores.add(ticket.getCodigoEquipo());
-        valores.add(ticket.getRutUsuario());
+        valores.add(ticket.getDetalle());
         return valores;
     }
 }

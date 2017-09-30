@@ -14,6 +14,7 @@ import java.util.ArrayList;
  */
 
 public class DB_Helper extends SQLiteOpenHelper {
+
         private static final int VERSION_BASEDATOS = 1;
         private static final String NOMBRE_BASEDATOS = "ctexpress.db";
         private static final String TABLA_USUARIO = "CREATE TABLE usuario (rut TEXT PRIMARY KEY, nombre TEXT, apellido TEXT, correo TEXT, clave TEXT, tipoUsuario TEXT)";
@@ -22,7 +23,8 @@ public class DB_Helper extends SQLiteOpenHelper {
                 "FOREIGN KEY (codigoFalla) REFERENCES falla(codigoFalla)," +
                 "FOREIGN KEY (codigoEquipo) REFERENCES equipo(codigoEquipo))";
         private static final String TABLA_SALA = "CREATE TABLE sala (codigoSala TEXT PRIMARY KEY, piso INTEGER)";
-        private  static final String TABLA_EQUIPO = "CREATE TABLE equipo (codigoEquipo TEXT PRIMARY KEY, descripcion TEXT, codigoSala TEXT, FOREIGN KEY(codigoSala) REFERENCES SALA(codigoSala))";
+
+        private  static final String TABLA_EQUIPO = "CREATE TABLE equipo (codigoEquipo TEXT PRIMARY KEY, descripcion TEXT, tipoEquipo TEXT, codigoSala TEXT, FOREIGN KEY(codigoSala) REFERENCES SALA(codigoSala))";
         private  static final String TABLA_SOLUCION_PROPUESTA = "CREATE TABLE solucion_propuesta (codigoSolucion TEXT PRIMARY KEY, descripcionSolucion TEXT)";
         private  static final String TABLA_FALLA = "CREATE TABLE falla (codigoFalla INTEGER PRIMARY KEY, descripcionFalla TEXT, codigoSolucion TEXT, FOREIGN KEY (codigoSolucion) REFERENCES solucion_propuesta(codigoSolucion))";
 

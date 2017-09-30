@@ -5,9 +5,12 @@ package cl.android.trabajo.ctexpress.Modelo;
  */
 
 public class Falla {
+
     private int codigoFalla;
     private String descripcionFalla;
     private String codigoSolucion;
+
+    public Falla(){}
 
     public Falla(int codigoFalla, String descripcionFalla, String codigoSolucion) {
         this.codigoFalla = codigoFalla;

@@ -86,7 +86,6 @@ public class MantenedorSolucionPropuesta {
 
     private ArrayList<String> valores(SolucionPropuesta solucionPropuesta){
         ArrayList<String> valores = new ArrayList<String>();
-        valores.add(solucionPropuesta.getCodigoSOlucion());
         valores.add(solucionPropuesta.getDescripcionSolucion());
         return valores;
     }

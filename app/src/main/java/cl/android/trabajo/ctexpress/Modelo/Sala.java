@@ -8,6 +8,10 @@ public class Sala {
     private String codigoSala;
     private int piso;
 
+    public Sala(){
+
+    }
+
     public Sala(String codigoSala, int piso) {
         this.codigoSala = codigoSala;
         this.piso = piso;
