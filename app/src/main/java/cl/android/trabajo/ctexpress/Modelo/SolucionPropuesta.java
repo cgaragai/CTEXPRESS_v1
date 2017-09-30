@@ -8,6 +8,9 @@ public class SolucionPropuesta {
     private String codigoSolucion;
     private String descripcionSolucion;
 
+    public  SolucionPropuesta(){
+
+    }
     public SolucionPropuesta(String codigoSolucion, String descripcionSolucion) {
         this.codigoSolucion = codigoSolucion;
         this.descripcionSolucion = descripcionSolucion;

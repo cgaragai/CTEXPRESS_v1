@@ -2,11 +2,8 @@ package cl.android.trabajo.ctexpress.Mantenedor;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import cl.android.trabajo.ctexpress.Modelo.Usuario;
 
@@ -15,113 +12,92 @@ import cl.android.trabajo.ctexpress.Modelo.Usuario;
  */
 
 public class MantenedorUsuario{
-    private Context context = this.context;
 
-    public void insertarDatos(Usuario usuario){
+    private DB_Helper conector;
+    private Context context;
+    private ArrayList<String> columnas;
+    private String tabla;
 
-        DB_Helper usuarioDB = new DB_Helper(context);
-        SQLiteDatabase db = usuarioDB.getWritableDatabase();//Ayuda a ejecutar consultas SQL
-        if(db != null) {
+    public MantenedorUsuario(Context context){
 
-            db.execSQL("INSERT INTO usuario "
-                    + "(rut, nombre, apellido, correo, clave, tipo_usuario) "
-                    + "VALUES ("
-                    + "'" + usuario.getRut()
-                    + "', '" + usuario.getNombre()
-                    + "', '" + usuario.getApellido()
-                    + "', '" + usuario.getCorreo()
-                    + "', '" + usuario.getClave()
-                    + "', '" + usuario.getTipoUsuario()
-                    + "');");
-
-        }
-        db.close();
-    }
-
-    public void modificarDatos(Usuario usuario){
-
-        DB_Helper usuarioDB = new DB_Helper(context);
-        SQLiteDatabase db = usuarioDB.getWritableDatabase();//Ayuda a ejecutar consultas SQL
-        if(db != null) {
-
-            db.execSQL("UPDATE usuario "
-                    + "SET nombre = '" + usuario.getNombre() + "', "
-                    + "apellido = '" + usuario.getApellido() + "', "
-                    + "correo = '" + usuario.getCorreo() + "', "
-                    + "clave = '" + usuario.getClave() + "', "
-                    + "tipo_usuario = '" + usuario.getTipoUsuario() + "' "
-                    + "WHERE rut = '" + usuario.getRut() + "';");
-
-        }
-        db.close();
-    }
-
-    public void eliminarUsuario(String rut){
-
-        DB_Helper usuarioDB = new DB_Helper(context);
-        SQLiteDatabase db = usuarioDB.getWritableDatabase();//Ayuda a ejecutar consultas SQL
-        if(db != null) {
-
-            db.execSQL("DELETE FROM usuario "
-                    + "WHERE rut = '" + rut + "';");
-
-        }
-        db.close();
+        this.context = context;
+        tabla = "usuario";
+        columnas = new ArrayList<String>();
+        columnas.add("nombre");
+        columnas.add("apellido");
+        columnas.add("correo");
+        columnas.add("clave");
+        columnas.add("tipoUsuario");
 
     }
 
-    public List<Usuario> retornaUsuarios()
-    {
-        DB_Helper usuarioDB = new DB_Helper(context);
-        SQLiteDatabase db= usuarioDB.getWritableDatabase();
-        List<Usuario> auxListaUsuario = new ArrayList<>();
-
-        Cursor auxCursor = db.rawQuery("SELECT * FROM usuario;",null);
-
-        auxCursor.moveToFirst();
-
-        do
-        {
-            Usuario auxUsuario = new Usuario();
-            auxUsuario.setRut(auxCursor.getString(0));
-            auxUsuario.setNombre(auxCursor.getString(1));
-            //
-            auxListaUsuario.add(auxUsuario);
-
-
-        } while(auxCursor.moveToNext());
-
-        auxCursor.close();
-        db.close();
-        return auxListaUsuario;
-
+    public ArrayList<Usuario> getAll() {
+        this.conector = new DB_Helper(this.context);
+        String query = "SELECT * FROM " + tabla;
+        Cursor resultado = this.conector.select(query);
+        ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
+        if (resultado.moveToFirst()) {
+            do {
+                Usuario usuario = this.setUsuario(resultado);
+                usuarios.add(usuario);
+            } while (resultado.moveToNext());
+        }
+        conector.close();
+        return usuarios;
     }
 
-    public Usuario buscarCliente(String rut)
-    {
-        DB_Helper usuarioDB = new DB_Helper(context);
-        SQLiteDatabase db = usuarioDB.getWritableDatabase();
-        Usuario auxUsuario = new Usuario();
-
-        Cursor auxCursor = db.rawQuery("SELECT * FROM usuario "
-                + " WHERE rut = '" + rut +"';",null);
-
-        auxCursor.moveToFirst();
-
-        if (auxCursor != null)
-        {
-            auxUsuario.setRut(auxCursor.getString(0));
-            auxUsuario.setNombre(auxCursor.getString(1));
-
+    public Usuario getByRut(String rut) {
+        this.conector = new DB_Helper(this.context);
+        String query = "SELECT * FROM " + tabla + " WHERE rut = '" + rut + "'";
+        Cursor resultado = this.conector.select(query);
+        Usuario usuario = new Usuario();
+        if (resultado.moveToFirst()) {
+            usuario = this.setUsuario(resultado);
         }
-        else
-        {
-            auxUsuario.setRut("");
-            auxUsuario.setNombre("");
-        }
-        auxCursor.close();
-        db.close();
-        return auxUsuario;
+        conector.close();
+        return usuario;
+    }
 
+    public void insert(Usuario usuario) {
+        this.conector = new DB_Helper(this.context);
+        ArrayList<String> valores = this.valores(usuario);
+        this.conector.insert(tabla, columnas, valores);
+        conector.close();
+    }
+
+    public void update(Usuario usuario) {
+        this.conector = new DB_Helper(this.context);
+        ArrayList<String> valores = this.valores(usuario);
+        String condicion = "rut = '" + usuario.getRut() + "'";
+        this.conector.update(tabla, columnas, valores, condicion);
+        conector.close();
+    }
+
+    public void delete(String rut) {
+        this.conector = new DB_Helper(this.context);
+        String condicion = "rut = '" + rut + "'";
+        this.conector.delete(tabla, condicion);
+        conector.close();
+    }
+
+    private Usuario setUsuario(Cursor resultado){
+        Usuario usuario = new Usuario();
+        usuario.setRut(resultado.getString(0));
+        usuario.setNombre(resultado.getString(1));
+        usuario.setApellido(resultado.getString(2));
+        usuario.setCorreo(resultado.getString(3));
+        usuario.setClave(resultado.getString(4));
+        usuario.setTipoUsuario(resultado.getString(5));
+        return usuario;
+    }
+
+    private ArrayList<String> valores(Usuario usuario){
+        ArrayList<String> valores = new ArrayList<String>();
+        valores.add(usuario.getNombre());
+        valores.add(usuario.getApellido());
+        valores.add(usuario.getCorreo());
+        valores.add(usuario.getClave());
+        valores.add(usuario.getTipoUsuario());
+        return valores;
     }
 }

@@ -11,6 +11,10 @@ public class Ticket {
     private String codigoEquipo;
     private String detalle;
 
+    public Ticket(){
+
+    }
+
     public Ticket(int codigoTicket, String rutUsuario, int codigoFalla, String codigoEquipo, String detalle) {
         this.codigoTicket = codigoTicket;
         this.rutUsuario = rutUsuario;

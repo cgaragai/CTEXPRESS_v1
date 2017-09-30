@@ -1,8 +1,13 @@
 package cl.android.trabajo.ctexpress.Mantenedor;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import java.util.ArrayList;
 
 /**
  * Created by Leonardo on 30-09-2017.
@@ -11,8 +16,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DB_Helper extends SQLiteOpenHelper {
         private static final int VERSION_BASEDATOS = 1;
         private static final String NOMBRE_BASEDATOS = "ctexpress.db";
-        private static final String TABLA_USUARIO = "CREATE TABLE usuario (rut TEXT PRIMARY KEY, "
-                + "nombre TEXT, apellido TEXT, correo TEXT, clave TEXT, tipo_usuario TEXT)";
+        private static final String TABLA_USUARIO = "CREATE TABLE usuario (rut TEXT PRIMARY KEY, nombre TEXT, apellido TEXT, correo TEXT, clave TEXT, tipoUsuario TEXT)";
         private static final String TABLA_TICKET = "CREATE TABLE ticket (codigoTicket TEXT PRIMARY KEY, rutUsuario TEXT, codigoFalla INTEGER, codigoEquipo TEXT, detalle TEXT, " +
                 "FOREIGN KEY (rutUsuario) REFERENCES usuario(rut)," +
                 "FOREIGN KEY (codigoFalla) REFERENCES falla(codigoFalla)," +
@@ -22,8 +26,11 @@ public class DB_Helper extends SQLiteOpenHelper {
         private  static final String TABLA_SOLUCION_PROPUESTA = "CREATE TABLE solucion_propuesta (codigoSolucion TEXT PRIMARY KEY, descripcionSolucion TEXT)";
         private  static final String TABLA_FALLA = "CREATE TABLE falla (codigoFalla INTEGER PRIMARY KEY, descripcionFalla TEXT, codigoSolucion TEXT, FOREIGN KEY (codigoSolucion) REFERENCES solucion_propuesta(codigoSolucion))";
 
+        private SQLiteDatabase db = null;
+
         public DB_Helper(Context context) {
             super(context, NOMBRE_BASEDATOS, null, VERSION_BASEDATOS);
+            db = getWritableDatabase();
         }
 
         @Override
@@ -46,5 +53,32 @@ public class DB_Helper extends SQLiteOpenHelper {
             db.execSQL("DROP TABLE IF EXISTS "+ TABLA_EQUIPO);
             db.execSQL("DROP TABLE IF EXISTS "+ TABLA_TICKET);
             onCreate(db);
+        }
+
+        public Cursor select(String sql) throws SQLiteException {
+            return db.rawQuery(sql, null);
+        }
+
+        public long insert(String tabla ,ArrayList<String> columnas, ArrayList<String> valores) throws SQLiteException {
+            ContentValues insert = new ContentValues();
+            for(int z=0;z<columnas.size();z++)
+                insert.put(columnas.get(z),valores.get(z));
+            return db.insert(tabla, null, insert);
+        }
+
+        public void update(String tabla ,ArrayList<String> columnas, ArrayList<String> valores, String condicion) throws SQLiteException {
+            ContentValues update = new ContentValues();
+            for(int z=0;z<columnas.size();z++)
+                update.put(columnas.get(z),valores.get(z));
+            db.update(tabla, update, condicion, null);
+        }
+
+        public void delete(String tabla, String condicion) throws SQLiteException {
+            db.delete(tabla, condicion, null);
+        }
+
+        @Override
+        public void close() {
+            db.close();
         }
 }
