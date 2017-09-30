@@ -8,6 +8,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import cl.android.trabajo.ctexpress.Mantenedor.MantenedorUsuario;
+import cl.android.trabajo.ctexpress.Modelo.Usuario;
+import cl.android.trabajo.ctexpress.Vista.Main.MainAdmin;
+import cl.android.trabajo.ctexpress.Vista.Main.MainAdministrativo;
+import cl.android.trabajo.ctexpress.Vista.Main.MainDocente;
 import cl.android.trabajo.ctexpress.Vista.Main.MainTecnico;
 import cl.android.trabajo.ctexpress.R;
 
@@ -27,8 +32,28 @@ public class Login extends AppCompatActivity {
         if(ok) {
             EditText etRut = (EditText) findViewById(R.id.txtRut);
             String rut = etRut.getText().toString();
+            Usuario dto = new Usuario();
+            MantenedorUsuario mantenedor = new MantenedorUsuario(this);
+            dto = (Usuario) mantenedor.getByRut(rut);
+            Class clase = null;
+            Intent intent;
 
-            Intent intent = new Intent(this, MainTecnico.class);
+            switch (dto.getTipoUsuario())
+            {
+                case "admin":
+                    clase = MainAdmin.class;
+                    break;
+                case "docente":
+                    clase = MainDocente.class;
+                    break;
+                case "tecnico":
+                    clase = MainTecnico.class;
+                    break;
+                case "administrativo":
+                    clase = MainAdministrativo.class;
+                    break;
+            }
+            intent = new Intent(this,clase);
             intent.putExtra("rutUsuario", rut);
             startActivity(intent);
         }
@@ -60,8 +85,12 @@ public class Login extends AppCompatActivity {
         String rut = etRut.getText().toString();
         TextView tvMensajeRut = (TextView)findViewById(R.id.tvMensajeRut);
         tvMensajeRut.setText("");
+        Usuario dto = new Usuario();
+        MantenedorUsuario mantenedor = new MantenedorUsuario(this);
+        dto = (Usuario) mantenedor.getByRut(rut);
 
-        if(rut.equals("1")) {
+
+        if(rut.equals(dto.getRut())) {
             return true;
         }else {
             if(rut.isEmpty())
@@ -79,8 +108,11 @@ public class Login extends AppCompatActivity {
         String clave = etClave.getText().toString();
         TextView tvMensajeClave = (TextView)findViewById(R.id.tvMensajeClave);
         tvMensajeClave.setText("");
+        Usuario dto = new Usuario();
+        MantenedorUsuario mantenedor = new MantenedorUsuario(this);
+        dto = (Usuario) mantenedor.getByRut(clave);
 
-        if(clave.equals("1")){
+        if(clave.equals(dto.getClave())){
             return true;
         }else {
             if(clave.isEmpty())
