@@ -20,6 +20,14 @@
             android:parentActivityName=".Vista.Login.Login"></activity>
         <activity android:name=".Vista.Main.MainTecnico"
             android:parentActivityName=".Vista.Login.Login"></activity>
+        <activity android:name=".Vista.Main.MainAdministrativo"
+            android:parentActivityName=".Vista.Login.Login"></activity>
+        <activity android:name=".Vista.Main.MainAdmin"
+            android:parentActivityName=".Vista.Login.Login"></activity>
+        <activity android:name=".Vista.Main.MainDocente"
+            android:parentActivityName=".Vista.Login.Login"></activity>
+        <activity android:name=".Vista.Usuarios.GenerarUsuario"
+            android:parentActivityName=".Vista.Main.MainAdmin"></activity>
     </application>
 
 </manifest>

@@ -65,6 +65,26 @@ public class MantenedorUsuario{
         conector.close();
     }
 
+    public void insertUsuariosIniciales() {
+        if(getAll().size() == 0) {
+            this.conector = new DB_Helper(this.context);
+            ArrayList<String> valores = new ArrayList<>();
+            valores.add("1-1");
+            valores.add("Cristian");
+            valores.add("Garagai");
+            valores.add("cg@ctexpress");
+            valores.add("abc123");
+            valores.add("admin");
+            this.conector.insert(tabla, columnas, valores);
+            valores.add("1-2");
+            valores.add("Leonardo");
+            valores.add("Godoy");
+            valores.add("lg@ctexpress");
+            this.conector.insert(tabla, columnas, valores);
+            conector.close();
+        }
+    }
+
     public void update(Usuario usuario) {
         this.conector = new DB_Helper(this.context);
         ArrayList<String> valores = this.valores(usuario);

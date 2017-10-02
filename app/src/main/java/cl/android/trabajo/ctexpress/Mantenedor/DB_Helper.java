@@ -17,16 +17,16 @@ public class DB_Helper extends SQLiteOpenHelper {
 
         private static final int VERSION_BASEDATOS = 1;
         private static final String NOMBRE_BASEDATOS = "ctexpress.db";
-        private static final String TABLA_USUARIO = "CREATE TABLE usuario (rut TEXT PRIMARY KEY, nombre TEXT, apellido TEXT, correo TEXT, clave TEXT, tipoUsuario TEXT)";
-        private static final String TABLA_TICKET = "CREATE TABLE ticket (codigoTicket TEXT PRIMARY KEY, rutUsuario TEXT, codigoFalla INTEGER, codigoEquipo TEXT, detalle TEXT, " +
+        private static final String TABLA_USUARIO = "CREATE TABLE IF NOT EXISTS usuario (rut TEXT PRIMARY KEY, nombre TEXT, apellido TEXT, correo TEXT, clave TEXT, tipoUsuario TEXT)";
+        private static final String TABLA_TICKET = "CREATE TABLE IF NOT EXISTS ticket (codigoTicket INTEGER PRIMARY KEY AUTOINCREMENT, rutUsuario TEXT, codigoFalla INTEGER, codigoEquipo TEXT, detalle TEXT, " +
                 "FOREIGN KEY (rutUsuario) REFERENCES usuario(rut)," +
                 "FOREIGN KEY (codigoFalla) REFERENCES falla(codigoFalla)," +
                 "FOREIGN KEY (codigoEquipo) REFERENCES equipo(codigoEquipo))";
-        private static final String TABLA_SALA = "CREATE TABLE sala (codigoSala TEXT PRIMARY KEY, piso INTEGER)";
+        private static final String TABLA_SALA = "CREATE TABLE IF NOT EXISTS sala (codigoSala TEXT PRIMARY KEY, piso INTEGER)";
 
-        private  static final String TABLA_EQUIPO = "CREATE TABLE equipo (codigoEquipo TEXT PRIMARY KEY, descripcion TEXT, tipoEquipo TEXT, codigoSala TEXT, FOREIGN KEY(codigoSala) REFERENCES SALA(codigoSala))";
-        private  static final String TABLA_SOLUCION_PROPUESTA = "CREATE TABLE solucion_propuesta (codigoSolucion TEXT PRIMARY KEY, descripcionSolucion TEXT)";
-        private  static final String TABLA_FALLA = "CREATE TABLE falla (codigoFalla INTEGER PRIMARY KEY, descripcionFalla TEXT, codigoSolucion TEXT, FOREIGN KEY (codigoSolucion) REFERENCES solucion_propuesta(codigoSolucion))";
+        private  static final String TABLA_EQUIPO = "CREATE TABLE IF NOT EXISTS equipo (codigoEquipo TEXT PRIMARY KEY, descripcion TEXT, tipoEquipo TEXT, codigoSala TEXT, FOREIGN KEY(codigoSala) REFERENCES SALA(codigoSala))";
+        private  static final String TABLA_SOLUCION_PROPUESTA = "CREATE TABLE IF NOT EXISTS solucion_propuesta (codigoSolucion TEXT PRIMARY KEY, descripcionSolucion TEXT)";
+        private  static final String TABLA_FALLA = "CREATE TABLE IF NOT EXISTS falla (codigoFalla INTEGER PRIMARY KEY, descripcionFalla TEXT, codigoSolucion TEXT, FOREIGN KEY (codigoSolucion) REFERENCES solucion_propuesta(codigoSolucion))";
 
         private SQLiteDatabase db = null;
 

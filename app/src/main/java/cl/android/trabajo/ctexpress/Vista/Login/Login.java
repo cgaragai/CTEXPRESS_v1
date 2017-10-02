@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -24,6 +25,8 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.login);
         TextView tvRecuperarClave = (TextView) findViewById(R.id.tvRecuperarClave);
         tvRecuperarClave.setPaintFlags(tvRecuperarClave.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        MantenedorUsuario mantenedor = new MantenedorUsuario(this);
+        mantenedor.insertUsuariosIniciales();
     }
 
     public void ingresar(View view) {
@@ -32,6 +35,13 @@ public class Login extends AppCompatActivity {
         if(ok) {
             EditText etRut = (EditText) findViewById(R.id.txtRut);
             String rut = etRut.getText().toString();
+            Log.i("rut", rut);
+
+            String auxRut = rut.substring(0, rut.length() - 2);
+            Log.i("auxRut", auxRut);
+            rut = auxRut + "-" + rut.substring(rut.length() - 1);
+            Log.i("rut", rut);
+
             Usuario dto = new Usuario();
             MantenedorUsuario mantenedor = new MantenedorUsuario(this);
             dto = (Usuario) mantenedor.getByRut(rut);
@@ -72,10 +82,11 @@ public class Login extends AppCompatActivity {
         boolean rut = validarRut();
         boolean clave = validarClave();
 
-        if (rut && clave)
-            return true;
-        else
-            return false;
+        if (rut)
+            if(clave)
+                return true;
+
+        return false;
 
     }
 
@@ -90,7 +101,7 @@ public class Login extends AppCompatActivity {
         dto = (Usuario) mantenedor.getByRut(rut);
 
 
-        if(rut.equals(dto.getRut())) {
+        if(dto != null) {
             return true;
         }else {
             if(rut.isEmpty())
