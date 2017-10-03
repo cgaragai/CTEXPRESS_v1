@@ -105,7 +105,7 @@ public class MantenedorTicket {
 
     private ArrayList<String> valores(Ticket ticket){
         ArrayList<String> valores = new ArrayList<String>();
-        valores.add(ticket.getCodigoTicket());
+        valores.add(String.valueOf(ticket.getCodigoTicket()));
         valores.add(ticket.getRutUsuario());
         valores.add(Integer.toString(ticket.getCodigoFalla()));
         valores.add(ticket.getCodigoEquipo());
