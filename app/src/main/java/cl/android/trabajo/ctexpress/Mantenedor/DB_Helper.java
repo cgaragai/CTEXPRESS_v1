@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -63,20 +64,22 @@ public class DB_Helper extends SQLiteOpenHelper {
 
         public long insert(String tabla ,ArrayList<String> columnas, ArrayList<String> valores) throws SQLiteException {
             ContentValues insert = new ContentValues();
-            for(int z=0;z<columnas.size();z++)
-                insert.put(columnas.get(z),valores.get(z));
+            for(int z=0;z<columnas.size();z++) {
+                Log.i("Datos",columnas.get(z) + " " + valores.get(z));
+                insert.put(columnas.get(z), valores.get(z));
+            }
             return db.insert(tabla, null, insert);
         }
 
-        public void update(String tabla ,ArrayList<String> columnas, ArrayList<String> valores, String condicion) throws SQLiteException {
+        public int update(String tabla ,ArrayList<String> columnas, ArrayList<String> valores, String condicion) throws SQLiteException {
             ContentValues update = new ContentValues();
-            for(int z=0;z<columnas.size();z++)
+            for(int z=1;z<columnas.size();z++)
                 update.put(columnas.get(z),valores.get(z));
-            db.update(tabla, update, condicion, null);
+            return db.update(tabla, update, condicion, null);
         }
 
-        public void delete(String tabla, String condicion) throws SQLiteException {
-            db.delete(tabla, condicion, null);
+        public int delete(String tabla, String condicion) throws SQLiteException {
+            return db.delete(tabla, condicion, null);
         }
 
         @Override

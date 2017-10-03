@@ -56,26 +56,39 @@ public class MantenedorSala {
         return sala;
     }
 
-    public void insert(Sala sala) {
+    public boolean insert(Sala sala) {
         this.conector = new DB_Helper(this.context);
         ArrayList<String> valores = this.valores(sala);
-        this.conector.insert(tabla, columnas, valores);
+        long id = this.conector.insert(tabla, columnas, valores);
         conector.close();
+        if(id == -1){
+            return false;
+        }
+
+        return true;
     }
 
-    public void update(Sala sala) {
+    public boolean update(Sala sala) {
         this.conector = new DB_Helper(this.context);
         ArrayList<String> valores = this.valores(sala);
         String condicion = "codigoSala = '" + sala.getCodigoSala() + "'";
-        this.conector.update(tabla, columnas, valores, condicion);
+        int cantidadAfectados = this.conector.update(tabla, columnas, valores, condicion);
         conector.close();
+        if(cantidadAfectados > 0)
+            return true;
+
+        return false;
     }
 
-    public void delete(String codigoSala) {
+    public boolean delete(String codigoSala) {
         this.conector = new DB_Helper(this.context);
         String condicion = "codigoSala = '" + codigoSala + "'";
-        this.conector.delete(tabla, condicion);
+        int cantidadAfectados = this.conector.delete(tabla, condicion);
         conector.close();
+        if(cantidadAfectados > 0)
+            return true;
+
+        return false;
     }
 
     private Sala setSala(Cursor resultado){
@@ -87,6 +100,7 @@ public class MantenedorSala {
 
     private ArrayList<String> valores(Sala sala){
         ArrayList<String> valores = new ArrayList<String>();
+        valores.add(sala.getCodigoSala());
         valores.add(Integer.toString(sala.getPiso()));
         return valores;
     }

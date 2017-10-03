@@ -2,6 +2,7 @@ package cl.android.trabajo.ctexpress.Mantenedor;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -23,6 +24,7 @@ public class MantenedorUsuario{
         this.context = context;
         tabla = "usuario";
         columnas = new ArrayList<String>();
+        columnas.add("rut");
         columnas.add("nombre");
         columnas.add("apellido");
         columnas.add("correo");
@@ -58,15 +60,21 @@ public class MantenedorUsuario{
         return usuario;
     }
 
-    public void insert(Usuario usuario) {
+    public boolean insert(Usuario usuario) {
         this.conector = new DB_Helper(this.context);
         ArrayList<String> valores = this.valores(usuario);
-        this.conector.insert(tabla, columnas, valores);
+        long id = this.conector.insert(tabla, columnas, valores);
         conector.close();
+        if(id == -1){
+            return false;
+        }
+
+        return true;
     }
 
     public void insertUsuariosIniciales() {
-        if(getAll().size() == 0) {
+        ArrayList<Usuario> usuarios = getAll();
+        if(usuarios.isEmpty()) {
             this.conector = new DB_Helper(this.context);
             ArrayList<String> valores = new ArrayList<>();
             valores.add("1-1");
@@ -76,28 +84,49 @@ public class MantenedorUsuario{
             valores.add("abc123");
             valores.add("admin");
             this.conector.insert(tabla, columnas, valores);
-            valores.add("1-2");
-            valores.add("Leonardo");
-            valores.add("Godoy");
-            valores.add("lg@ctexpress");
+            valores.set(0, "1-2");
+            valores.set(1, "Leonardo");
+            valores.set(2, "Godoy");
+            valores.set(3, "lg@ctexpress");
             this.conector.insert(tabla, columnas, valores);
             conector.close();
         }
     }
 
-    public void update(Usuario usuario) {
+    public boolean update(Usuario usuario) {
         this.conector = new DB_Helper(this.context);
         ArrayList<String> valores = this.valores(usuario);
         String condicion = "rut = '" + usuario.getRut() + "'";
-        this.conector.update(tabla, columnas, valores, condicion);
+        int cantidadAfectados = this.conector.update(tabla, columnas, valores, condicion);
         conector.close();
+        if(cantidadAfectados > 0)
+            return true;
+
+        return false;
     }
 
-    public void delete(String rut) {
+    public boolean delete(String rut) {
         this.conector = new DB_Helper(this.context);
         String condicion = "rut = '" + rut + "'";
-        this.conector.delete(tabla, condicion);
+        int cantidadAfectados = this.conector.delete(tabla, condicion);
         conector.close();
+        if(cantidadAfectados > 0)
+            return true;
+
+        return false;
+    }
+
+    public boolean rutExiste(String rut){
+        this.conector = new DB_Helper(this.context);
+        String query = "SELECT COUNT(*) FROM " + tabla + " WHERE rut = '" + rut + "'";
+        Cursor resultado = this.conector.select(query);
+        boolean existe = false;
+        if (resultado.moveToFirst()) {
+            if(resultado.getInt(0) > 0)
+                existe = true;
+        }
+        conector.close();
+        return existe;
     }
 
     private Usuario setUsuario(Cursor resultado){
@@ -113,6 +142,7 @@ public class MantenedorUsuario{
 
     private ArrayList<String> valores(Usuario usuario){
         ArrayList<String> valores = new ArrayList<String>();
+        valores.add(usuario.getRut());
         valores.add(usuario.getNombre());
         valores.add(usuario.getApellido());
         valores.add(usuario.getCorreo());

@@ -57,26 +57,39 @@ public class MantenedorEquipo {
         return equipo;
     }
 
-    public void insert(Equipo equipo) {
+    public boolean insert(Equipo equipo) {
         this.conector = new DB_Helper(this.context);
         ArrayList<String> valores = this.valores(equipo);
-        this.conector.insert(tabla, columnas, valores);
+        long id = this.conector.insert(tabla, columnas, valores);
         conector.close();
+        if(id == -1){
+            return false;
+        }
+
+        return true;
     }
 
-    public void update(Equipo equipo) {
+    public boolean update(Equipo equipo) {
         this.conector = new DB_Helper(this.context);
         ArrayList<String> valores = this.valores(equipo);
         String condicion = "codigoEquipo = '" + equipo.getCodigoEquipo() + "'";
-        this.conector.update(tabla, columnas, valores, condicion);
+        int cantidadAfectados = this.conector.update(tabla, columnas, valores, condicion);
         conector.close();
+        if(cantidadAfectados > 0)
+            return true;
+
+        return false;
     }
 
-    public void delete(String codigoEquipo) {
+    public boolean delete(String codigoEquipo) {
         this.conector = new DB_Helper(this.context);
         String condicion = "codigoEquipo = '" + codigoEquipo + "'";
-        this.conector.delete(tabla, condicion);
+        int cantidadAfectados = this.conector.delete(tabla, condicion);
         conector.close();
+        if(cantidadAfectados > 0)
+            return true;
+
+        return false;
     }
 
     private Equipo setEquipo(Cursor resultado){
@@ -90,6 +103,7 @@ public class MantenedorEquipo {
 
     private ArrayList<String> valores(Equipo equipo){
         ArrayList<String> valores = new ArrayList<String>();
+        valores.add(equipo.getCodigoEquipo());
         valores.add(equipo.getDescripcion());
         valores.add(equipo.getTipoEquipo());
         valores.add(equipo.getCodigoSala());

@@ -58,26 +58,39 @@ public class MantenedorTicket {
         return ticket;
     }
 
-    public void insert(Ticket ticket) {
+    public boolean insert(Ticket ticket) {
         this.conector = new DB_Helper(this.context);
         ArrayList<String> valores = this.valores(ticket);
-        this.conector.insert(tabla, columnas, valores);
+        long id = this.conector.insert(tabla, columnas, valores);
         conector.close();
+        if(id == -1){
+            return false;
+        }
+
+        return true;
     }
 
-    public void update(Ticket ticket) {
+    public boolean update(Ticket ticket) {
         this.conector = new DB_Helper(this.context);
         ArrayList<String> valores = this.valores(ticket);
         String condicion = "codigoTicket = " + ticket.getCodigoTicket();
-        this.conector.update(tabla, columnas, valores, condicion);
+        int cantidadAfectados = this.conector.update(tabla, columnas, valores, condicion);
         conector.close();
+        if(cantidadAfectados > 0)
+            return true;
+
+        return false;
     }
 
-    public void delete(int codigoTicket) {
+    public boolean delete(int codigoTicket) {
         this.conector = new DB_Helper(this.context);
         String condicion = "codigoTicket = " + codigoTicket;
-        this.conector.delete(tabla, condicion);
+        int cantidadAfectados = this.conector.delete(tabla, condicion);
         conector.close();
+        if(cantidadAfectados > 0)
+            return true;
+
+        return false;
     }
 
     private Ticket setTicket(Cursor resultado){
@@ -92,6 +105,7 @@ public class MantenedorTicket {
 
     private ArrayList<String> valores(Ticket ticket){
         ArrayList<String> valores = new ArrayList<String>();
+        valores.add(ticket.getCodigoTicket());
         valores.add(ticket.getRutUsuario());
         valores.add(Integer.toString(ticket.getCodigoFalla()));
         valores.add(ticket.getCodigoEquipo());

@@ -56,26 +56,39 @@ public class MantenedorFalla {
         return falla;
     }
 
-    public void insert(Falla falla) {
+    public boolean insert(Falla falla) {
         this.conector = new DB_Helper(this.context);
         ArrayList<String> valores = this.valores(falla);
-        this.conector.insert(tabla, columnas, valores);
+        long id = this.conector.insert(tabla, columnas, valores);
         conector.close();
+        if(id == -1){
+            return false;
+        }
+
+        return true;
     }
 
-    public void update(Falla falla) {
+    public boolean update(Falla falla) {
         this.conector = new DB_Helper(this.context);
         ArrayList<String> valores = this.valores(falla);
         String condicion = "codigoFalla = '" + falla.getCodigoFalla() + "'";
-        this.conector.update(tabla, columnas, valores, condicion);
+        int cantidadAfectados = this.conector.update(tabla, columnas, valores, condicion);
         conector.close();
+        if(cantidadAfectados > 0)
+            return true;
+
+        return false;
     }
 
-    public void delete(String codigoSala) {
+    public boolean delete(String codigoSala) {
         this.conector = new DB_Helper(this.context);
         String condicion = "codigoSala = '" + codigoSala + "'";
-        this.conector.delete(tabla, condicion);
+        int cantidadAfectados = this.conector.delete(tabla, condicion);
         conector.close();
+        if(cantidadAfectados > 0)
+            return true;
+
+        return false;
     }
 
     private Falla setFalla(Cursor resultado){
@@ -88,6 +101,7 @@ public class MantenedorFalla {
 
     private ArrayList<String> valores(Falla falla){
         ArrayList<String> valores = new ArrayList<String>();
+        valores.add(falla.getCodigoFalla());
         valores.add(falla.getDescripcionFalla());
         valores.add(falla.getCodigoSolucion());
         return valores;

@@ -55,26 +55,39 @@ public class MantenedorSolucionPropuesta {
         return solucionPropuesta;
     }
 
-    public void insert(SolucionPropuesta solucionPropuesta) {
+    public boolean insert(SolucionPropuesta solucionPropuesta) {
         this.conector = new DB_Helper(this.context);
         ArrayList<String> valores = this.valores(solucionPropuesta);
-        this.conector.insert(tabla, columnas, valores);
+        long id = this.conector.insert(tabla, columnas, valores);
         conector.close();
+        if(id == -1){
+            return false;
+        }
+
+        return true;
     }
 
-    public void update(SolucionPropuesta solucionPropuesta) {
+    public boolean update(SolucionPropuesta solucionPropuesta) {
         this.conector = new DB_Helper(this.context);
         ArrayList<String> valores = this.valores(solucionPropuesta);
         String condicion = "codigoSolucion = " + solucionPropuesta.getCodigoSOlucion();
-        this.conector.update(tabla, columnas, valores, condicion);
+        int cantidadAfectados = this.conector.update(tabla, columnas, valores, condicion);
         conector.close();
+        if(cantidadAfectados > 0)
+            return true;
+
+        return false;
     }
 
-    public void delete(int codigoTicket) {
+    public boolean delete(int codigoTicket) {
         this.conector = new DB_Helper(this.context);
         String condicion = "codigoSolucion = " + codigoTicket;
-        this.conector.delete(tabla, condicion);
+        int cantidadAfectados = this.conector.delete(tabla, condicion);
         conector.close();
+        if(cantidadAfectados > 0)
+            return true;
+
+        return false;
     }
 
     private SolucionPropuesta setSolucionPropuesta(Cursor resultado){
@@ -86,6 +99,7 @@ public class MantenedorSolucionPropuesta {
 
     private ArrayList<String> valores(SolucionPropuesta solucionPropuesta){
         ArrayList<String> valores = new ArrayList<String>();
+        valores.add(solucionPropuesta.getCodigoSOlucion());
         valores.add(solucionPropuesta.getDescripcionSolucion());
         return valores;
     }

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -31,35 +30,28 @@ public class Login extends AppCompatActivity {
 
     public void ingresar(View view) {
 
-        boolean ok = validarCampos();
+        EditText etRut = (EditText) findViewById(R.id.txtRut);
+        String rut = etRut.getText().toString();
+
+        boolean ok = validarCampos(rut);
         if(ok) {
-            EditText etRut = (EditText) findViewById(R.id.txtRut);
-            String rut = etRut.getText().toString();
-            Log.i("rut", rut);
+            Usuario usuario = getUsuarioByRut(rut);
 
-            String auxRut = rut.substring(0, rut.length() - 2);
-            Log.i("auxRut", auxRut);
-            rut = auxRut + "-" + rut.substring(rut.length() - 1);
-            Log.i("rut", rut);
-
-            Usuario dto = new Usuario();
-            MantenedorUsuario mantenedor = new MantenedorUsuario(this);
-            dto = (Usuario) mantenedor.getByRut(rut);
             Class clase = null;
             Intent intent;
 
-            switch (dto.getTipoUsuario())
+            switch (usuario.getTipoUsuario())
             {
-                case "admin":
+                case "Admin":
                     clase = MainAdmin.class;
                     break;
-                case "docente":
+                case "Docente":
                     clase = MainDocente.class;
                     break;
-                case "tecnico":
+                case "Tecnico":
                     clase = MainTecnico.class;
                     break;
-                case "administrativo":
+                case "Administrativo":
                     clase = MainAdministrativo.class;
                     break;
             }
@@ -77,62 +69,72 @@ public class Login extends AppCompatActivity {
 
     }
 
-    private boolean validarCampos(){
+    private boolean validarCampos(String rut){
 
-        boolean rut = validarRut();
-        boolean clave = validarClave();
+        boolean auxRut = validarRut(rut);
 
-        if (rut)
-            if(clave)
+        if (auxRut) {
+            boolean clave = validarClave(rut);
+            if (clave)
                 return true;
+        }
 
         return false;
 
     }
 
-    private boolean validarRut(){
+    private boolean validarRut(String rut){
 
-        EditText etRut = (EditText) findViewById(R.id.txtRut);
-        String rut = etRut.getText().toString();
         TextView tvMensajeRut = (TextView)findViewById(R.id.tvMensajeRut);
         tvMensajeRut.setText("");
-        Usuario dto = new Usuario();
-        MantenedorUsuario mantenedor = new MantenedorUsuario(this);
-        dto = (Usuario) mantenedor.getByRut(rut);
+
+        Usuario usuario = getUsuarioByRut(rut);
 
 
-        if(dto != null) {
+        if(usuario.getNombre() != null)
             return true;
-        }else {
+        else
             if(rut.isEmpty())
                 tvMensajeRut.setText("Debe ingresar Rut");
             else
-                tvMensajeRut.setText("Rut ingresado no válido");
-        }
+                if(!validarRutExiste(rut))
+                    tvMensajeRut.setText("Rut ingresado no válido");
+
         return false;
 
     }
 
-    private boolean validarClave(){
+    private boolean validarClave(String rut){
 
         EditText etClave = (EditText) findViewById(R.id.txtClave);
         String clave = etClave.getText().toString();
         TextView tvMensajeClave = (TextView)findViewById(R.id.tvMensajeClave);
         tvMensajeClave.setText("");
-        Usuario dto = new Usuario();
-        MantenedorUsuario mantenedor = new MantenedorUsuario(this);
-        dto = (Usuario) mantenedor.getByRut(clave);
 
-        if(clave.equals(dto.getClave())){
+        Usuario usuario = getUsuarioByRut(rut);
+
+        if(clave.equals(usuario.getClave()))
             return true;
-        }else {
+        else
             if(clave.isEmpty())
                 tvMensajeClave.setText("Debe ingresar Clave");
             else
                 tvMensajeClave.setText("Clave ingresada no válida");
-        }
 
         return false;
+    }
+
+    private boolean validarRutExiste(String rut){//Devuelve Usuario vacio si no lo encuentra
+        MantenedorUsuario mantenedor = new MantenedorUsuario(this);
+        boolean existe = mantenedor.rutExiste(rut);
+        return existe;
+    }
+
+    private Usuario getUsuarioByRut(String rut){
+        Usuario usuario = new Usuario();
+        MantenedorUsuario mantenedor = new MantenedorUsuario(this);
+        return mantenedor.getByRut(rut);
 
     }
+
 }
