@@ -7,6 +7,7 @@ import android.view.View;
 
 import cl.android.trabajo.ctexpress.R;
 import cl.android.trabajo.ctexpress.Vista.Usuarios.GenerarUsuario;
+import cl.android.trabajo.ctexpress.Vista.Usuarios.GestionUsuarios;
 
 /**
  * Created by Elaps-Merlina on 29-09-2017.
@@ -29,7 +30,8 @@ public class MainAdmin extends AppCompatActivity {
 
     public void gestionarUsuarios(View view) {
 
-
+        Intent intent = new Intent(this, GestionUsuarios.class);
+        startActivity(intent);
 
     }
 
