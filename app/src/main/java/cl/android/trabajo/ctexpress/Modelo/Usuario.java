@@ -1,10 +1,12 @@
 package cl.android.trabajo.ctexpress.Modelo;
 
+import java.io.Serializable;
+
 /**
  * Created by Leonardo on 28-09-2017.
  */
 
-public class Usuario {
+public class Usuario implements Serializable {
     private String rut;
     private String nombre;
     private String apellido;

@@ -24,6 +24,7 @@ public class MainAdmin extends AppCompatActivity {
     public void registrarUsuario(View view) {
 
         Intent intent = new Intent(this, GenerarUsuario.class);
+        intent.putExtra("existe", false);
         startActivity(intent);
 
     }

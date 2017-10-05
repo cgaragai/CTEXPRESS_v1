@@ -4,11 +4,19 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import cl.android.trabajo.ctexpress.Mantenedor.MantenedorEquipo;
+import cl.android.trabajo.ctexpress.Mantenedor.MantenedorFalla;
+import cl.android.trabajo.ctexpress.Mantenedor.MantenedorTicket;
 import cl.android.trabajo.ctexpress.Mantenedor.MantenedorUsuario;
+import cl.android.trabajo.ctexpress.Modelo.Equipo;
+import cl.android.trabajo.ctexpress.Modelo.Falla;
+import cl.android.trabajo.ctexpress.Modelo.Ticket;
 import cl.android.trabajo.ctexpress.Modelo.Usuario;
 import cl.android.trabajo.ctexpress.Vista.Main.MainAdmin;
 import cl.android.trabajo.ctexpress.Vista.Main.MainAdministrativo;
@@ -26,6 +34,7 @@ public class Login extends AppCompatActivity {
         tvRecuperarClave.setPaintFlags(tvRecuperarClave.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         MantenedorUsuario mantenedor = new MantenedorUsuario(this);
         mantenedor.insertUsuariosIniciales();
+
     }
 
     public void ingresar(View view) {

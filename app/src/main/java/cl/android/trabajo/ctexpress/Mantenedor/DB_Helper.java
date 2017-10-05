@@ -19,7 +19,7 @@ public class DB_Helper extends SQLiteOpenHelper {
         private static final int VERSION_BASEDATOS = 1;
         private static final String NOMBRE_BASEDATOS = "ctexpress.db";
         private static final String TABLA_USUARIO = "CREATE TABLE IF NOT EXISTS usuario (rut TEXT PRIMARY KEY, nombre TEXT, apellido TEXT, correo TEXT, clave TEXT, tipoUsuario TEXT)";
-        private static final String TABLA_TICKET = "CREATE TABLE IF NOT EXISTS ticket (codigoTicket INTEGER PRIMARY KEY AUTOINCREMENT, rutUsuario TEXT, codigoFalla INTEGER, codigoEquipo TEXT, detalle TEXT, " +
+        private static final String TABLA_TICKET = "CREATE TABLE IF NOT EXISTS ticket (codigoTicket INTEGER PRIMARY KEY AUTOINCREMENT, rutUsuario TEXT, codigoFalla INTEGER, codigoEquipo TEXT, detalle TEXT, estado TEXT, " +
                 "FOREIGN KEY (rutUsuario) REFERENCES usuario(rut)," +
                 "FOREIGN KEY (codigoFalla) REFERENCES falla(codigoFalla)," +
                 "FOREIGN KEY (codigoEquipo) REFERENCES equipo(codigoEquipo))";

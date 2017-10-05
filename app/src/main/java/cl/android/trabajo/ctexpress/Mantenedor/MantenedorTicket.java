@@ -2,6 +2,7 @@ package cl.android.trabajo.ctexpress.Mantenedor;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -23,7 +24,6 @@ public class MantenedorTicket {
         this.context = context;
         tabla = "ticket";
         columnas = new ArrayList<String>();
-        columnas.add("codigoTicket");
         columnas.add("rutUsuario");
         columnas.add("codigoFalla");
         columnas.add("codigoEquipo");
@@ -107,12 +107,12 @@ public class MantenedorTicket {
 
     private ArrayList<String> valores(Ticket ticket){
         ArrayList<String> valores = new ArrayList<String>();
-        valores.add(String.valueOf(ticket.getCodigoTicket()));
         valores.add(ticket.getRutUsuario());
         valores.add(Integer.toString(ticket.getCodigoFalla()));
         valores.add(ticket.getCodigoEquipo());
         valores.add(ticket.getDetalle());
         valores.add(ticket.getEstado());
+
         return valores;
     }
 }

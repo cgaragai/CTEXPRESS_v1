@@ -33,11 +33,18 @@ public class GestionUsuarios extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Usuario usuario = (Usuario) parent.getItemAtPosition(position);
-                String mensaje = "Usuario.rut = " + usuario.getRut();
-                mensaje(mensaje);
+
+                editarUsuario(usuario);
 
             }
         });
+    }
+
+    private void editarUsuario(Usuario usuario){
+        Intent intent = new Intent(this, GenerarUsuario.class);
+        intent.putExtra("existe", true);
+        intent.putExtra("Usuario", usuario);
+        startActivity(intent);
     }
 
     private void mensaje(String mensaje){
