@@ -65,16 +65,12 @@ public class MantenedorUsuario{
         ArrayList<String> valores = this.valores(usuario);
         long id = this.conector.insert(tabla, columnas, valores);
         conector.close();
-        if(id == -1){
-            return false;
-        }
+        return id != -1;
 
-        return true;
     }
 
     public void insertUsuariosIniciales() {
-        ArrayList<Usuario> usuarios = getAll();
-        if(usuarios.isEmpty()) {
+        if(getAll().isEmpty()) {
             this.conector = new DB_Helper(this.context);
             ArrayList<String> valores = new ArrayList<>();
             valores.add("1-1");
@@ -99,10 +95,8 @@ public class MantenedorUsuario{
         String condicion = "rut = '" + usuario.getRut() + "'";
         int cantidadAfectados = this.conector.update(tabla, columnas, valores, condicion);
         conector.close();
-        if(cantidadAfectados > 0)
-            return true;
+        return cantidadAfectados > 0;
 
-        return false;
     }
 
     public boolean delete(String rut) {
@@ -110,10 +104,8 @@ public class MantenedorUsuario{
         String condicion = "rut = '" + rut + "'";
         int cantidadAfectados = this.conector.delete(tabla, condicion);
         conector.close();
-        if(cantidadAfectados > 0)
-            return true;
+        return cantidadAfectados > 0;
 
-        return false;
     }
 
     public boolean rutExiste(String rut){

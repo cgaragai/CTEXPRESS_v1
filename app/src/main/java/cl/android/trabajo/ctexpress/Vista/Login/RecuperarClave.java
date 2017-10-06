@@ -54,10 +54,8 @@ public class RecuperarClave extends AppCompatActivity {
 
     private boolean comprobarCorreo(String correo){//comprobar si el correo ingresado existe
 
-        if(correo.equals("cristian@leo.cl"))
-            return true;
+        return correo.equals("cristian@leo.cl");
 
-        return false;
     }
 
     private boolean enviarCorreo(String correo){//Se envía correo, true para envío efectuado, false error en conexión

@@ -60,11 +60,8 @@ public class MantenedorSolucionPropuesta {
         ArrayList<String> valores = this.valores(solucionPropuesta);
         long id = this.conector.insert(tabla, columnas, valores);
         conector.close();
-        if(id == -1){
-            return false;
-        }
+        return id != -1;
 
-        return true;
     }
 
     public boolean update(SolucionPropuesta solucionPropuesta) {
@@ -73,10 +70,8 @@ public class MantenedorSolucionPropuesta {
         String condicion = "codigoSolucion = " + solucionPropuesta.getCodigoSolucion();
         int cantidadAfectados = this.conector.update(tabla, columnas, valores, condicion);
         conector.close();
-        if(cantidadAfectados > 0)
-            return true;
+        return cantidadAfectados > 0;
 
-        return false;
     }
 
     public boolean delete(int codigoTicket) {
@@ -84,10 +79,8 @@ public class MantenedorSolucionPropuesta {
         String condicion = "codigoSolucion = " + codigoTicket;
         int cantidadAfectados = this.conector.delete(tabla, condicion);
         conector.close();
-        if(cantidadAfectados > 0)
-            return true;
+        return cantidadAfectados > 0;
 
-        return false;
     }
 
     private SolucionPropuesta setSolucionPropuesta(Cursor resultado){

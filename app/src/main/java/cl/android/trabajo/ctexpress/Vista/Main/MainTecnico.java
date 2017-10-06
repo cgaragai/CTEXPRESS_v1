@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import cl.android.trabajo.ctexpress.R;
+import cl.android.trabajo.ctexpress.Vista.Tickets.VerListaTickets;
 
 public class MainTecnico extends AppCompatActivity {
 
@@ -18,11 +19,21 @@ public class MainTecnico extends AppCompatActivity {
     }
 
     public void verTicketAbiertos(View view) {
+
+        irVerListaTickets("abierto");
+
     }
 
     public void verTicketAsignado(View view) {
 
+        irVerListaTickets("asignado");
 
+    }
 
+    private void irVerListaTickets(String estado){
+        Intent intent = new Intent(this, VerListaTickets.class);
+        intent.putExtra("estado", estado);
+        intent.putExtra("rutUsuario", rut);
+        startActivity(intent);
     }
 }

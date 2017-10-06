@@ -10,32 +10,31 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import cl.android.trabajo.ctexpress.Modelo.Usuario;
+import cl.android.trabajo.ctexpress.Modelo.Ticket;
 import cl.android.trabajo.ctexpress.R;
 
 /**
- * Created by Elaps-Merlina on 04-10-2017.
+ * Created by Elaps-Merlina on 05-10-2017.
  */
 
-public class AdapterUsuarios extends BaseAdapter {
+public class AdapterTickets extends BaseAdapter {
 
     protected Activity activity;
-    ArrayList<Usuario> usuarios = new ArrayList<>();
+    ArrayList<Ticket> tickets = new ArrayList<>();
 
-    public AdapterUsuarios(Activity activity, ArrayList<Usuario> usuarios){
+    public AdapterTickets(Activity activity, ArrayList<Ticket> Tickes){
         this.activity = activity;
-        this.usuarios = usuarios;
+        this.tickets = tickets;
     }
-
 
     @Override
     public int getCount() {
-        return usuarios.size();
+        return tickets.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return usuarios.get(position);
+        return tickets.get(position);
     }
 
     @Override
@@ -50,19 +49,19 @@ public class AdapterUsuarios extends BaseAdapter {
 
         if(convertView == null){
             LayoutInflater inf = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            v = inf.inflate(R.layout.lista_usuarios, null);
+            v = inf.inflate(R.layout.lista_tickets, null);
         }
 
-        Usuario usuario = usuarios.get(position);
+        Ticket ticket = new Ticket();
 
-        TextView tvRut = v.findViewById(R.id.tvRut);
-        tvRut.setText(usuario.getRut());
+        TextView tvCodTicket = v.findViewById(R.id.tvCodTicket);
+        tvCodTicket.setText(String.valueOf(tickets.get(position).getCodigoTicket()));
 
-        TextView tvNombreCompleto = v.findViewById(R.id.tvNombreCompleto);
-        tvNombreCompleto.setText(usuario.getNombre() + " " + usuario.getApellido());
+        TextView tvCodFalla = v.findViewById(R.id.tvCodFalla);
+        tvCodFalla.setText(String.valueOf(tickets.get(position).getCodigoFalla()));
 
-        TextView tvCargo = v.findViewById(R.id.tvCargo);
-        tvCargo.setText(usuario.getTipoUsuario());
+        TextView tvDetalle = v.findViewById(R.id.tvDetalle);
+        tvDetalle.setText(tickets.get(position).getDetalle());
 
         return v;
     }

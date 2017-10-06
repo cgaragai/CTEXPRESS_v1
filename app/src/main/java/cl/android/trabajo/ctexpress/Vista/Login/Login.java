@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import cl.android.trabajo.ctexpress.Mantenedor.MantenedorEquipo;
 import cl.android.trabajo.ctexpress.Mantenedor.MantenedorFalla;
+import cl.android.trabajo.ctexpress.Mantenedor.MantenedorSala;
 import cl.android.trabajo.ctexpress.Mantenedor.MantenedorTicket;
 import cl.android.trabajo.ctexpress.Mantenedor.MantenedorUsuario;
 import cl.android.trabajo.ctexpress.Modelo.Equipo;
@@ -32,9 +33,15 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.login);
         TextView tvRecuperarClave = (TextView) findViewById(R.id.tvRecuperarClave);
         tvRecuperarClave.setPaintFlags(tvRecuperarClave.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
         MantenedorUsuario mantenedor = new MantenedorUsuario(this);
         mantenedor.insertUsuariosIniciales();
 
+        MantenedorSala mantenedorSala = new MantenedorSala(this);
+        mantenedorSala.insertSalasIniciales();
+
+        MantenedorEquipo mantenedorEquipo = new MantenedorEquipo(this);
+        mantenedorEquipo.insertEquiposIniciales();
     }
 
     public void ingresar(View view) {

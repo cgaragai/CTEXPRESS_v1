@@ -13,18 +13,20 @@ public class Ticket {
     private String codigoEquipo;
     private String detalle;
     private String estado;
+    private String rutTecnico;
 
     public Ticket(){
 
     }
 
-    public Ticket(int codigoTicket, String rutUsuario, int codigoFalla, String codigoEquipo, String detalle, String estado) {
+    public Ticket(int codigoTicket, String rutUsuario, int codigoFalla, String codigoEquipo, String detalle, String estado, String rutTecnico) {
         this.codigoTicket = codigoTicket;
         this.rutUsuario = rutUsuario;
         this.codigoFalla = codigoFalla;
         this.codigoEquipo = codigoEquipo;
         this.detalle = detalle;
         this.estado = estado;
+        this.rutTecnico = rutTecnico;
     }
 
     public int getCodigoTicket() {
@@ -73,5 +75,13 @@ public class Ticket {
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    public String getRutTecnico() {
+        return rutTecnico;
+    }
+
+    public void setRutTecnico(String rutTecnico) {
+        this.rutTecnico = rutTecnico;
     }
 }

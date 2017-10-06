@@ -51,7 +51,7 @@ public class MantenedorSala {
         ArrayList<Integer> pisos = new ArrayList<Integer>();
         if (resultado.moveToFirst()) {
             do {
-                int piso = Integer.valueOf(resultado.toString());
+                int piso = resultado.getInt(0);
                 pisos.add(piso);
             } while (resultado.moveToNext());
         }
@@ -59,14 +59,14 @@ public class MantenedorSala {
         return pisos;
     }
 
-    public ArrayList<String> getByPiso(int piso){
+    public ArrayList<String> getCodigoSalaByPiso(int piso){
         this.conector = new DB_Helper(this.context);
-        String query = "SELECT distinct(piso) FROM " + tabla +" WHERE piso = "+piso;
+        String query = "SELECT codigoSala FROM " + tabla +" WHERE piso = " + piso;
         Cursor resultado = this.conector.select(query);
         ArrayList<String> salas = new ArrayList<String>();
         if (resultado.moveToFirst()) {
             do {
-                String sala = resultado.toString();
+                String sala = resultado.getString(0);
                 salas.add(sala);
             } while (resultado.moveToNext());
         }
@@ -91,11 +91,46 @@ public class MantenedorSala {
         ArrayList<String> valores = this.valores(sala);
         long id = this.conector.insert(tabla, columnas, valores);
         conector.close();
-        if(id == -1){
-            return false;
-        }
+        return id != -1;
 
-        return true;
+    }
+
+    public void insertSalasIniciales(){
+        if(getAll().isEmpty()) {
+            this.conector = new DB_Helper(this.context);
+            ArrayList<String> valores = new ArrayList<>();
+            valores.add("101");
+            valores.add("1");
+            this.conector.insert(tabla, columnas, valores);
+            valores.set(0, "102");
+            valores.set(1, "1");
+            this.conector.insert(tabla, columnas, valores);
+            valores.set(0, "103");
+            valores.set(1, "1");
+            this.conector.insert(tabla, columnas, valores);
+            valores.set(0, "201");
+            valores.set(1, "2");
+            this.conector.insert(tabla, columnas, valores);
+            valores.set(0, "202");
+            valores.set(1, "2");
+            this.conector.insert(tabla, columnas, valores);
+            valores.set(0, "301");
+            valores.set(1, "3");
+            this.conector.insert(tabla, columnas, valores);
+            valores.set(0, "L1");
+            valores.set(1, "4");
+            this.conector.insert(tabla, columnas, valores);
+            valores.set(0, "L2");
+            valores.set(1, "4");
+            this.conector.insert(tabla, columnas, valores);
+            valores.set(0, "L3");
+            valores.set(1, "4");
+            this.conector.insert(tabla, columnas, valores);
+            valores.set(0, "L4");
+            valores.set(1, "4");
+            this.conector.insert(tabla, columnas, valores);
+            conector.close();
+        }
     }
 
     public boolean update(Sala sala) {
@@ -104,10 +139,8 @@ public class MantenedorSala {
         String condicion = "codigoSala = '" + sala.getCodigoSala() + "'";
         int cantidadAfectados = this.conector.update(tabla, columnas, valores, condicion);
         conector.close();
-        if(cantidadAfectados > 0)
-            return true;
+        return cantidadAfectados > 0;
 
-        return false;
     }
 
     public boolean delete(String codigoSala) {
@@ -115,10 +148,8 @@ public class MantenedorSala {
         String condicion = "codigoSala = '" + codigoSala + "'";
         int cantidadAfectados = this.conector.delete(tabla, condicion);
         conector.close();
-        if(cantidadAfectados > 0)
-            return true;
+        return cantidadAfectados > 0;
 
-        return false;
     }
 
     private Sala setSala(Cursor resultado){

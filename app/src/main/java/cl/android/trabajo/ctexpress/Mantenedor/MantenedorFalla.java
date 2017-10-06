@@ -61,11 +61,8 @@ public class MantenedorFalla {
         ArrayList<String> valores = this.valores(falla);
         long id = this.conector.insert(tabla, columnas, valores);
         conector.close();
-        if(id == -1){
-            return false;
-        }
+        return id != -1;
 
-        return true;
     }
 
     public boolean update(Falla falla) {
@@ -74,10 +71,8 @@ public class MantenedorFalla {
         String condicion = "codigoFalla = '" + falla.getCodigoFalla() + "'";
         int cantidadAfectados = this.conector.update(tabla, columnas, valores, condicion);
         conector.close();
-        if(cantidadAfectados > 0)
-            return true;
+        return cantidadAfectados > 0;
 
-        return false;
     }
 
     public boolean delete(String codigoSala) {
@@ -85,10 +80,8 @@ public class MantenedorFalla {
         String condicion = "codigoSala = '" + codigoSala + "'";
         int cantidadAfectados = this.conector.delete(tabla, condicion);
         conector.close();
-        if(cantidadAfectados > 0)
-            return true;
+        return cantidadAfectados > 0;
 
-        return false;
     }
 
     private Falla setFalla(Cursor resultado){
