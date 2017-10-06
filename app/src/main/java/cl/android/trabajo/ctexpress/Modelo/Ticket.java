@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by Leonardo on 28-09-2017.
  */
 
-public class Ticket implements Serializable {
+public class Ticket {
     private int codigoTicket;
     private String rutUsuario;
     private int codigoFalla;
