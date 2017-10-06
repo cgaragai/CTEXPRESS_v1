@@ -44,6 +44,36 @@ public class MantenedorSala {
         return salas;
     }
 
+    public ArrayList<Integer> getAllPiso(){
+        this.conector = new DB_Helper(this.context);
+        String query = "SELECT distinct(piso) FROM " + tabla;
+        Cursor resultado = this.conector.select(query);
+        ArrayList<Integer> pisos = new ArrayList<Integer>();
+        if (resultado.moveToFirst()) {
+            do {
+                int piso = Integer.valueOf(resultado.toString());
+                pisos.add(piso);
+            } while (resultado.moveToNext());
+        }
+        conector.close();
+        return pisos;
+    }
+
+    public ArrayList<String> getByPiso(int piso){
+        this.conector = new DB_Helper(this.context);
+        String query = "SELECT distinct(piso) FROM " + tabla +" WHERE piso = "+piso;
+        Cursor resultado = this.conector.select(query);
+        ArrayList<String> salas = new ArrayList<String>();
+        if (resultado.moveToFirst()) {
+            do {
+                String sala = resultado.toString();
+                salas.add(sala);
+            } while (resultado.moveToNext());
+        }
+        conector.close();
+        return salas;
+    }
+
     public Sala getByCodigoSala(String codigoSala) {
         this.conector = new DB_Helper(this.context);
         String query = "SELECT * FROM " + tabla + " WHERE codigoSala = '" + codigoSala + "'";

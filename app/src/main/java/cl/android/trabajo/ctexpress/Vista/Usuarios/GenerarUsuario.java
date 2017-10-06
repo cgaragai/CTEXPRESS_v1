@@ -163,7 +163,10 @@ public class GenerarUsuario extends AppCompatActivity {
     private void cargarSpinnerUsuario(){
         Spinner spinner = (Spinner) findViewById(R.id.spTipoUsuario);
         String[] tipoUsuario = {"Seleccione","Admin","Administrativo","Docente","Tecnico"};
-        spinner.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,tipoUsuario));
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,tipoUsuario);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
     }
 
     private void mensaje(String mensaje){
