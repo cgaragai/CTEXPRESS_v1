@@ -154,17 +154,14 @@ public class GenerarTicket extends AppCompatActivity implements AdapterView.OnIt
                 if(codigoEquipo.equals("Seleccione")){
                     ++cantidadEnabled;
                 }else {
-                    this.codigoEquipo.setAdapter(getArrayAdapter(null, "Desconocido"));
-                    this.codigoEquipo.setEnabled(true);
+                    this.falla.setAdapter(getArrayAdapter(null, ""));
+                    this.falla.setEnabled(true);
                 }
                 break;
 
             case R.id.spFallaTicket:
-                Button siguiente = (Button) findViewById(R.id.btnSigTicket);
                 if(falla.getSelectedItemPosition() > 0)
-                    siguiente.setEnabled(true);
-                else
-                    siguiente.setEnabled(false);
+                    cantidadEnabled = -1;
                 break;
 
         }
@@ -184,6 +181,7 @@ public class GenerarTicket extends AppCompatActivity implements AdapterView.OnIt
     }
 
     private void setSpinnerEnabled(int cantidadEnabled){
+        Button siguiente = (Button) findViewById(R.id.btnSigTicket);
         switch(cantidadEnabled){
             case 4:
                 this.sala.setEnabled(false);
@@ -197,9 +195,12 @@ public class GenerarTicket extends AppCompatActivity implements AdapterView.OnIt
             case 1:
                 this.falla.setEnabled(false);
                 this.falla.setAdapter(null);
+            case 0:
+                siguiente.setEnabled(false);
+                break;
+            default:
+                siguiente.setEnabled(true);
         }
-        Button siguiente = (Button) findViewById(R.id.btnSigTicket);
-        siguiente.setEnabled(false);
     }
 
     @Override
