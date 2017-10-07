@@ -50,7 +50,22 @@ public class MantenedorTicket {
 
     public ArrayList<Ticket> getAllByEstado(String estado) {
         this.conector = new DB_Helper(this.context);
-        String query = "SELECT * FROM " + tabla + " WHERE estado = " + estado;
+        String query = "SELECT * FROM " + tabla + " WHERE estado = '" + estado+"'";
+        Cursor resultado = this.conector.select(query);
+        ArrayList<Ticket> tickets = new ArrayList<Ticket>();
+        if (resultado.moveToFirst()) {
+            do {
+                Ticket ticket = this.setTicket(resultado);
+                tickets.add(ticket);
+            } while (resultado.moveToNext());
+        }
+        conector.close();
+        return tickets;
+    }
+
+    public ArrayList<Ticket> getAllByProfesor() {
+        this.conector = new DB_Helper(this.context);
+        String query = "SELECT rutUsuario, Count(codigoTicket) FROM " + tabla +" GROUP BY rutUsuario";
         Cursor resultado = this.conector.select(query);
         ArrayList<Ticket> tickets = new ArrayList<Ticket>();
         if (resultado.moveToFirst()) {
@@ -65,7 +80,7 @@ public class MantenedorTicket {
 
     public ArrayList<Ticket> getAllByEstadoAndRutTecnico(String estado, String rutTecnico) {
         this.conector = new DB_Helper(this.context);
-        String query = "SELECT * FROM " + tabla + " WHERE estado = " + estado + " AND rutTecnico = " + rutTecnico;
+        String query = "SELECT * FROM " + tabla + " WHERE estado = '" + estado + "' AND rutTecnico = '" + rutTecnico+"'";
         Cursor resultado = this.conector.select(query);
         ArrayList<Ticket> tickets = new ArrayList<Ticket>();
         if (resultado.moveToFirst()) {

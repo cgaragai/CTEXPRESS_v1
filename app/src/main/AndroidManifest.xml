@@ -34,6 +34,10 @@
             android:parentActivityName=".Vista.Main.MainAdmin"></activity>
         <activity android:name=".Vista.Tickets.Solucion"
             android:parentActivityName=".Vista.Tickets.GenerarTicket"></activity>
+        <activity android:name=".Vista.Tickets.BuscarTicket"
+            android:parentActivityName=".Vista.Main.MainAdministrativo"></activity>
+        <activity android:name=".Vista.Reportes.Estadisticas"
+            android:parentActivityName=".Vista.Main.MainAdministrativo"></activity>
     </application>
 
 </manifest>

@@ -41,7 +41,7 @@ public class GenerarTicket extends AppCompatActivity implements AdapterView.OnIt
         this.tipoEquipo = (Spinner) findViewById(R.id.spTipoEquipoTicket);
         this.falla = (Spinner) findViewById(R.id.spFallaTicket);
 
-        cargarSpinners();
+        cargarSpinnerPiso();
 
         this.piso.setOnItemSelectedListener(this);
         this.sala.setOnItemSelectedListener(this);
@@ -80,16 +80,6 @@ public class GenerarTicket extends AppCompatActivity implements AdapterView.OnIt
         return ticket;
     }
 
-    private void cargarSpinners(){
-        cargarSpinnerPiso();
-        //cargarSpinnerTipoEquipo();
-    }
-
-    /*private void cargarSpinnerTipoEquipo(){
-        Spinner spinner = (Spinner) findViewById(R.id.spTipoEquipoTicket);
-        String[] tipoEquipo = {"Seleccione","Aire Acondicionado","Computador","Proyector","Televisor"};
-        spinner.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,tipoEquipo));
-    }*/
 
     private void cargarSpinnerPiso(){
         MantenedorSala negocioSala = new MantenedorSala(this);

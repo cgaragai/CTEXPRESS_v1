@@ -86,8 +86,8 @@ public class MantenedorFalla {
             valores.add("Otro");
             valores.add(null);
             this.conector.insert(tabla, columnas, valores);
-            valores.set(0, "Equipo no enciende");
-            valores.set(1, "SO001");
+            valores.set(0,"Equipo no enciende");
+            valores.set(1,"SO001");
             this.conector.insert(tabla, columnas, valores);
             valores.set(0, "No muestra imagen");
             valores.set(1, "SO002");
