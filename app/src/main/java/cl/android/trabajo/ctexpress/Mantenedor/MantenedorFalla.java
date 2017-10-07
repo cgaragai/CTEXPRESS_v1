@@ -83,11 +83,11 @@ public class MantenedorFalla {
         if(getAll().isEmpty()) {
             this.conector = new DB_Helper(this.context);
             ArrayList<String> valores = new ArrayList<>();
-            valores.set(0, "Otro");
-            valores.set(1, null);
+            valores.add("Otro");
+            valores.add(null);
             this.conector.insert(tabla, columnas, valores);
-            valores.add("Equipo no enciende");
-            valores.add("SO001");
+            valores.set(0,"Equipo no enciende");
+            valores.set(1,"SO001");
             this.conector.insert(tabla, columnas, valores);
             valores.set(0, "No muestra imagen");
             valores.set(1, "SO002");
