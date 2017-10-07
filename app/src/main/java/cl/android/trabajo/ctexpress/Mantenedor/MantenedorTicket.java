@@ -105,12 +105,12 @@ public class MantenedorTicket {
         return ticket;
     }
 
-    public boolean insert(Ticket ticket) {
+    public int insert(Ticket ticket) {
         this.conector = new DB_Helper(this.context);
         ArrayList<String> valores = this.valores(ticket);
         long id = this.conector.insert(tabla, columnas, valores);
         conector.close();
-        return id != -1;
+        return (int)id;
 
     }
 
@@ -118,6 +118,7 @@ public class MantenedorTicket {
         this.conector = new DB_Helper(this.context);
         ArrayList<String> valores = this.valores(ticket);
         String condicion = "codigoTicket = " + ticket.getCodigoTicket();
+        Log.i("Condicion", condicion);
         int cantidadAfectados = this.conector.update(tabla, columnas, valores, condicion);
         conector.close();
         return cantidadAfectados > 0;

@@ -53,29 +53,31 @@ public class GenerarTicket extends AppCompatActivity implements AdapterView.OnIt
 
     public void siguienteTicket(View view) {
         Ticket ticket = tempTicket();
-        if(ticket != null) {
+        if(ticket.getCodigoTicket() > 0) {
             Intent intent = new Intent(this, Solucion.class);
             intent.putExtra("Ticket", ticket);
             startActivity(intent);
+        }else{
+            mensaje("Error al crear ticket");
         }
     }
     public Ticket tempTicket(){
         Ticket ticket = new Ticket();
-        String codigoSala = String.valueOf(sala.getSelectedItem());
-        Log.i("codigoSala", codigoSala);
         String codigoEquipo = String.valueOf(this.codigoEquipo.getSelectedItem());
-        Log.i("codigoEquipo", codigoEquipo);
         String codAndDetalleFalla = String.valueOf(this.falla.getSelectedItem());
         EditText detalle = (EditText) findViewById(R.id.txtDetalleTicket);
 
         MantenedorTicket negocioTicket = new MantenedorTicket(this);
         ticket.setRutUsuario(rut);
-        ticket.setCodigoFalla(Integer.parseInt(codAndDetalleFalla.split("-")[0]));
+
+        String[] codAndDetalle = codAndDetalleFalla.split("-");
+
+        ticket.setCodigoFalla(Integer.parseInt(codAndDetalle[0]));
         if(!codigoEquipo.equals("Desconocido"))ticket.setCodigoEquipo(codigoEquipo);
-        if(!detalle.toString().isEmpty())ticket.setDetalle(detalle.toString());
+        ticket.setDetalle(detalle.toString());
         ticket.setEstado("Creado");
-        boolean ok = negocioTicket.insert(ticket);
-        Log.i("Insert OK", String.valueOf(ok));
+        int id = negocioTicket.insert(ticket);
+        if(id > -1) ticket.setCodigoTicket(id);
 
         return ticket;
     }

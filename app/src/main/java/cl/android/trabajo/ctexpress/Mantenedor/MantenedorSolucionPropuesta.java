@@ -2,6 +2,7 @@ package cl.android.trabajo.ctexpress.Mantenedor;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -44,12 +45,17 @@ public class MantenedorSolucionPropuesta {
     }
 
     public SolucionPropuesta getByCodigoSolucion(String codigoSolucion) {
-        this.conector = new DB_Helper(this.context);
-        String query = "SELECT * FROM " + tabla + " WHERE codigoSolucion = " + codigoSolucion;
-        Cursor resultado = this.conector.select(query);
         SolucionPropuesta solucionPropuesta = new SolucionPropuesta();
-        if (resultado.moveToFirst()) {
-            solucionPropuesta = this.setSolucionPropuesta(resultado);
+        this.conector = new DB_Helper(this.context);
+        try {
+            Log.i("codigoSolucion", codigoSolucion);
+            String query = "SELECT * FROM " + tabla + " WHERE codigoSolucion = '" + codigoSolucion + "'";
+            Cursor resultado = this.conector.select(query);
+            if (resultado.moveToFirst()) {
+                solucionPropuesta = this.setSolucionPropuesta(resultado);
+            }
+        }catch (Exception e){
+
         }
         conector.close();
         return solucionPropuesta;

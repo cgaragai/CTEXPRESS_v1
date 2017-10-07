@@ -58,9 +58,9 @@ public class MantenedorFalla {
         return codAndDetalles;
     }
 
-    public Falla getByCodigoFalla(String codigoFalla) {
+    public Falla getByCodigoFalla(int codigoFalla) {
         this.conector = new DB_Helper(this.context);
-        String query = "SELECT * FROM " + tabla + " WHERE codigoFalla = '" + codigoFalla + "'";
+        String query = "SELECT * FROM " + tabla + " WHERE codigoFalla = " + codigoFalla;
         Cursor resultado = this.conector.select(query);
         Falla falla = new Falla();
         if (resultado.moveToFirst()) {
@@ -99,16 +99,16 @@ public class MantenedorFalla {
     public boolean update(Falla falla) {
         this.conector = new DB_Helper(this.context);
         ArrayList<String> valores = this.valores(falla);
-        String condicion = "codigoFalla = '" + falla.getCodigoFalla() + "'";
+        String condicion = "codigoFalla = " + falla.getCodigoFalla();
         int cantidadAfectados = this.conector.update(tabla, columnas, valores, condicion);
         conector.close();
         return cantidadAfectados > 0;
 
     }
 
-    public boolean delete(String codigoSala) {
+    public boolean delete(int codigoFalla) {
         this.conector = new DB_Helper(this.context);
-        String condicion = "codigoSala = '" + codigoSala + "'";
+        String condicion = "codigoFalla = " + codigoFalla;
         int cantidadAfectados = this.conector.delete(tabla, condicion);
         conector.close();
         return cantidadAfectados > 0;
@@ -118,8 +118,8 @@ public class MantenedorFalla {
     private Falla setFalla(Cursor resultado){
         Falla falla = new Falla();
         falla.setCodigoFalla(resultado.getInt(0));
-        falla.setCodigoSolucion(resultado.getString(1));
-        falla.setDescripcionFalla(resultado.getString(2));
+        falla.setDescripcionFalla(resultado.getString(1));
+        falla.setCodigoSolucion(resultado.getString(2));
         return falla;
     }
 

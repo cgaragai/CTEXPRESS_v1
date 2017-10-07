@@ -31,15 +31,19 @@ public class MantenedorEquipo {
     }
 
     public ArrayList<Equipo> getAll(String condicion) {
-        this.conector = new DB_Helper(this.context);
-        String query = "SELECT * FROM " + tabla + condicion;
-        Cursor resultado = this.conector.select(query);
         ArrayList<Equipo> equipos = new ArrayList<Equipo>();
-        if (resultado.moveToFirst()) {
-            do {
-                Equipo equipo = this.setEquipo(resultado);
-                equipos.add(equipo);
-            } while (resultado.moveToNext());
+        this.conector = new DB_Helper(this.context);
+        try {
+            String query = "SELECT * FROM " + tabla + condicion;
+            Cursor resultado = this.conector.select(query);
+            if (resultado.moveToFirst()) {
+                do {
+                    Equipo equipo = this.setEquipo(resultado);
+                    equipos.add(equipo);
+                } while (resultado.moveToNext());
+            }
+        }catch (Exception e){
+
         }
         conector.close();
         return equipos;
@@ -51,30 +55,39 @@ public class MantenedorEquipo {
     }
 
     public ArrayList<String> getAllTipoEquipoByCodigoSala(String codigoSala) {
-        this.conector = new DB_Helper(this.context);
-        String query = "SELECT distinct(tipoEquipo) FROM " + tabla + " WHERE codigoSala = '" + codigoSala + "'";
-        Cursor resultado = this.conector.select(query);
         ArrayList<String> tipoEquipos = new ArrayList<>();
-        if (resultado.moveToFirst()) {
-            do {
-                String tipoEquipo = resultado.getString(0);
-                tipoEquipos.add(tipoEquipo);
-            } while (resultado.moveToNext());
+        this.conector = new DB_Helper(this.context);
+        try {
+            String query = "SELECT distinct(tipoEquipo) FROM " + tabla + " WHERE codigoSala = '" + codigoSala + "'";
+            Cursor resultado = this.conector.select(query);
+            if (resultado.moveToFirst()) {
+                do {
+                    String tipoEquipo = resultado.getString(0);
+                    tipoEquipos.add(tipoEquipo);
+                } while (resultado.moveToNext());
+            }
+
+        }catch (Exception e){
+
         }
         conector.close();
         return tipoEquipos;
     }
 
     public ArrayList<String> getCodByCodSalaAndTipoEquipo(String codigoSala, String tipoEquipo) {
-        this.conector = new DB_Helper(this.context);
-        String query = "SELECT codigoEquipo FROM " + tabla + " WHERE codigoSala = '" + codigoSala + "' AND tipoEquipo = '" + tipoEquipo + "'";
-        Cursor resultado = this.conector.select(query);
         ArrayList<String> codigosEquipo = new ArrayList<>();
-        if (resultado.moveToFirst()) {
-            do {
-                String codigoEquipo = resultado.getString(0);
-                codigosEquipo.add(codigoEquipo);
-            } while (resultado.moveToNext());
+        this.conector = new DB_Helper(this.context);
+        try {
+            String query = "SELECT codigoEquipo FROM " + tabla + " WHERE codigoSala = '" + codigoSala + "' AND tipoEquipo = '" + tipoEquipo + "'";
+            Cursor resultado = this.conector.select(query);
+            if (resultado.moveToFirst()) {
+                do {
+                    String codigoEquipo = resultado.getString(0);
+                    codigosEquipo.add(codigoEquipo);
+                } while (resultado.moveToNext());
+            }
+        }catch(Exception e){
+
         }
         conector.close();
         return codigosEquipo;

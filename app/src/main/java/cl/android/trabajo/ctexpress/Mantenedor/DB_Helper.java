@@ -64,18 +64,24 @@ public class DB_Helper extends SQLiteOpenHelper {
         }
 
         public long insert(String tabla ,ArrayList<String> columnas, ArrayList<String> valores) throws SQLiteException {
+            Log.i("Insert","----------------------");
             ContentValues insert = new ContentValues();
             for(int z=0;z<columnas.size();z++) {
                 Log.i("Datos",columnas.get(z) + " " + valores.get(z));
                 insert.put(columnas.get(z), valores.get(z));
             }
+            Log.i("Insert","----------------------");
             return db.insert(tabla, null, insert);
         }
 
         public int update(String tabla ,ArrayList<String> columnas, ArrayList<String> valores, String condicion) throws SQLiteException {
+            Log.i("Update","----------------------");
             ContentValues update = new ContentValues();
-            for(int z=1;z<columnas.size();z++)
-                update.put(columnas.get(z),valores.get(z));
+            for(int z=1;z<columnas.size();z++) {
+                Log.i("Datos",columnas.get(z) + " " + valores.get(z));
+                update.put(columnas.get(z), valores.get(z));
+            }
+            Log.i("Update","----------------------");
             return db.update(tabla, update, condicion, null);
         }
 
