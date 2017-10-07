@@ -20,13 +20,13 @@ public class MainTecnico extends AppCompatActivity {
 
     public void verTicketAbiertos(View view) {
 
-        irVerListaTickets("abierto");
+        irVerListaTickets("Abierto");
 
     }
 
     public void verTicketAsignado(View view) {
 
-        irVerListaTickets("asignado");
+        irVerListaTickets("Asignado");
 
     }
 

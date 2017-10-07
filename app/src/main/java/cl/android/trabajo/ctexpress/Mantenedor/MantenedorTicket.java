@@ -131,7 +131,6 @@ public class MantenedorTicket {
         this.conector = new DB_Helper(this.context);
         ArrayList<String> valores = this.valores(ticket);
         String condicion = "codigoTicket = " + ticket.getCodigoTicket();
-        Log.i("Condicion", condicion);
         int cantidadAfectados = this.conector.update(tabla, columnas, valores, condicion);
         conector.close();
         return cantidadAfectados > 0;

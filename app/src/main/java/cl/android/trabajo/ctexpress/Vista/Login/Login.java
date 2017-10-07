@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import cl.android.trabajo.ctexpress.Mantenedor.MantenedorEquipo;
 import cl.android.trabajo.ctexpress.Mantenedor.MantenedorFalla;
 import cl.android.trabajo.ctexpress.Mantenedor.MantenedorSala;
@@ -49,6 +51,14 @@ public class Login extends AppCompatActivity {
 
         MantenedorFalla mantenedorFalla = new MantenedorFalla(this);
         mantenedorFalla.insertFallasIniciales();
+
+        MantenedorTicket mantenedorTicket = new MantenedorTicket(this);
+        ArrayList<Ticket> tickets = mantenedorTicket.getAll();
+        if(!tickets.isEmpty()){
+            for(Ticket ticket:tickets){
+                Log.i("Ticket", String.valueOf(ticket.getCodigoTicket()) + " " + ticket.getEstado());
+            }
+        }
     }
 
     public void ingresar(View view) {

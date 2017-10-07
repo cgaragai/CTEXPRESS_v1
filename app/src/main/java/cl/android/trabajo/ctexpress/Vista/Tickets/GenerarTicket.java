@@ -21,6 +21,7 @@ import cl.android.trabajo.ctexpress.Mantenedor.MantenedorSala;
 import cl.android.trabajo.ctexpress.Mantenedor.MantenedorTicket;
 import cl.android.trabajo.ctexpress.Modelo.Ticket;
 import cl.android.trabajo.ctexpress.R;
+import cl.android.trabajo.ctexpress.Vista.Main.MainDocente;
 
 /**
  * Created by Leonardo on 30-09-2017.
@@ -54,9 +55,14 @@ public class GenerarTicket extends AppCompatActivity implements AdapterView.OnIt
     public void siguienteTicket(View view) {
         Ticket ticket = tempTicket();
         if(ticket.getCodigoTicket() > 0) {
-            Intent intent = new Intent(this, Solucion.class);
-            intent.putExtra("Ticket", ticket);
-            startActivity(intent);
+            if(ticket.getEstado().equals("Abierto")){
+                cargarSpinnerPiso();
+                mensaje("Ticket generado");
+            }else {
+                Intent intent = new Intent(this, Solucion.class);
+                intent.putExtra("Ticket", ticket);
+                startActivity(intent);
+            }
         }else{
             mensaje("Error al crear ticket");
         }
@@ -65,7 +71,7 @@ public class GenerarTicket extends AppCompatActivity implements AdapterView.OnIt
         Ticket ticket = new Ticket();
         String codigoEquipo = String.valueOf(this.codigoEquipo.getSelectedItem());
         String codAndDetalleFalla = String.valueOf(this.falla.getSelectedItem());
-        EditText detalle = (EditText) findViewById(R.id.txtDetalleTicket);
+        EditText etDetalle = (EditText) findViewById(R.id.txtDetalleTicket);
 
         MantenedorTicket negocioTicket = new MantenedorTicket(this);
         ticket.setRutUsuario(rut);
@@ -74,8 +80,12 @@ public class GenerarTicket extends AppCompatActivity implements AdapterView.OnIt
 
         ticket.setCodigoFalla(Integer.parseInt(codAndDetalle[0]));
         if(!codigoEquipo.equals("Desconocido"))ticket.setCodigoEquipo(codigoEquipo);
-        ticket.setDetalle(detalle.toString());
-        ticket.setEstado("Creado");
+        ticket.setDetalle(etDetalle.getText().toString());
+
+        if(falla.getSelectedItemPosition() == 1)
+            ticket.setEstado("Abierto");
+        else
+            ticket.setEstado("Creado");
         int id = negocioTicket.insert(ticket);
         if(id > -1) ticket.setCodigoTicket(id);
 

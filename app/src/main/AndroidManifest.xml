@@ -38,6 +38,8 @@
             android:parentActivityName=".Vista.Main.MainAdministrativo"></activity>
         <activity android:name=".Vista.Reportes.Estadisticas"
             android:parentActivityName=".Vista.Main.MainAdministrativo"></activity>
+        <activity android:name=".Vista.Tickets.VerListaTickets"
+            android:parentActivityName=".Vista.Main.MainTecnico"></activity>
     </application>
 
 </manifest>

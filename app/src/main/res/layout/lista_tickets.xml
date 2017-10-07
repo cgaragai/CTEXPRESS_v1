@@ -21,7 +21,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tvCodFalla"
+            android:id="@+id/tvCodAndDescripcionFalla"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -32,7 +32,7 @@
         <TextView
             android:id="@+id/tvDetalle"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="55dp"
             android:singleLine="false"
             android:text="Detalle" />
     </LinearLayout>

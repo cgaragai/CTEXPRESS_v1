@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import cl.android.trabajo.ctexpress.Mantenedor.MantenedorFalla;
 import cl.android.trabajo.ctexpress.Modelo.Ticket;
 import cl.android.trabajo.ctexpress.R;
 
@@ -22,7 +23,7 @@ public class AdapterTickets extends BaseAdapter {
     protected Activity activity;
     ArrayList<Ticket> tickets = new ArrayList<>();
 
-    public AdapterTickets(Activity activity, ArrayList<Ticket> Tickes){
+    public AdapterTickets(Activity activity, ArrayList<Ticket> tickets){
         this.activity = activity;
         this.tickets = tickets;
     }
@@ -52,16 +53,17 @@ public class AdapterTickets extends BaseAdapter {
             v = inf.inflate(R.layout.lista_tickets, null);
         }
 
-        Ticket ticket = new Ticket();
+        Ticket ticket = tickets.get(position);
 
         TextView tvCodTicket = v.findViewById(R.id.tvCodTicket);
-        tvCodTicket.setText(String.valueOf(tickets.get(position).getCodigoTicket()));
+        tvCodTicket.setText(String.valueOf(ticket.getCodigoTicket()));
 
-        TextView tvCodFalla = v.findViewById(R.id.tvCodFalla);
-        tvCodFalla.setText(String.valueOf(tickets.get(position).getCodigoFalla()));
+        TextView tvCodFalla = v.findViewById(R.id.tvCodAndDescripcionFalla);
+        MantenedorFalla mantenedorFalla = new MantenedorFalla(activity);
+        tvCodFalla.setText(String.valueOf(tickets.get(position).getCodigoFalla()) + " " + mantenedorFalla.getByCodigoFalla(ticket.getCodigoFalla()).getDescripcionFalla());
 
         TextView tvDetalle = v.findViewById(R.id.tvDetalle);
-        tvDetalle.setText(tickets.get(position).getDetalle());
+        tvDetalle.setText("Detalle " + ticket.getDetalle());
 
         return v;
     }
