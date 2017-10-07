@@ -28,7 +28,7 @@ public class DB_Helper extends SQLiteOpenHelper {
 
         private  static final String TABLA_EQUIPO = "CREATE TABLE IF NOT EXISTS equipo (codigoEquipo TEXT PRIMARY KEY, descripcion TEXT, tipoEquipo TEXT, codigoSala TEXT, FOREIGN KEY(codigoSala) REFERENCES SALA(codigoSala))";
         private  static final String TABLA_SOLUCION_PROPUESTA = "CREATE TABLE IF NOT EXISTS solucion_propuesta (codigoSolucion TEXT PRIMARY KEY, descripcionSolucion TEXT)";
-        private  static final String TABLA_FALLA = "CREATE TABLE IF NOT EXISTS falla (codigoFalla INTEGER PRIMARY KEY, descripcionFalla TEXT, codigoSolucion TEXT, FOREIGN KEY (codigoSolucion) REFERENCES solucion_propuesta(codigoSolucion))";
+        private  static final String TABLA_FALLA = "CREATE TABLE IF NOT EXISTS falla (codigoFalla INTEGER PRIMARY KEY AUTOINCREMENT, descripcionFalla TEXT, codigoSolucion TEXT, FOREIGN KEY (codigoSolucion) REFERENCES solucion_propuesta(codigoSolucion))";
 
         private SQLiteDatabase db = null;
 

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import cl.android.trabajo.ctexpress.Mantenedor.MantenedorEquipo;
+import cl.android.trabajo.ctexpress.Mantenedor.MantenedorFalla;
 import cl.android.trabajo.ctexpress.Mantenedor.MantenedorSala;
 import cl.android.trabajo.ctexpress.Mantenedor.MantenedorTicket;
 import cl.android.trabajo.ctexpress.Modelo.Ticket;
@@ -26,7 +28,7 @@ import cl.android.trabajo.ctexpress.R;
 
 public class GenerarTicket extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
     private String rut;
-    private Spinner piso,sala,codigoEquipo,tipoEquipo;
+    private Spinner piso,sala,codigoEquipo,tipoEquipo, falla;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,46 +39,44 @@ public class GenerarTicket extends AppCompatActivity implements AdapterView.OnIt
         this.sala = (Spinner) findViewById(R.id.spSalaTicket);
         this.codigoEquipo = (Spinner) findViewById(R.id.spCodigoEquipoTicket);
         this.tipoEquipo = (Spinner) findViewById(R.id.spTipoEquipoTicket);
+        this.falla = (Spinner) findViewById(R.id.spFallaTicket);
 
         cargarSpinners();
 
         this.piso.setOnItemSelectedListener(this);
         this.sala.setOnItemSelectedListener(this);
+        this.tipoEquipo.setOnItemSelectedListener(this);
+        this.codigoEquipo.setOnItemSelectedListener(this);
+        this.falla.setOnItemSelectedListener(this);
 
     }
 
     public void siguienteTicket(View view) {
-        Intent intent = new Intent(this,Solucion.class);
-        startActivity(intent);
+        Ticket ticket = tempTicket();
+        if(ticket != null) {
+            Intent intent = new Intent(this, Solucion.class);
+            intent.putExtra("Ticket", ticket);
+            startActivity(intent);
+        }
     }
     public Ticket tempTicket(){
-        Ticket ticket  = new Ticket();
-        String mensaje = "";
-        Spinner codigoEquipo = (Spinner) findViewById(R.id.spCodigoEquipoTicket);
-        Spinner falla = (Spinner) findViewById(R.id.spFallaTicket);
+        Ticket ticket = new Ticket();
+        String codigoSala = String.valueOf(sala.getSelectedItem());
+        Log.i("codigoSala", codigoSala);
+        String codigoEquipo = String.valueOf(this.codigoEquipo.getSelectedItem());
+        Log.i("codigoEquipo", codigoEquipo);
+        String codAndDetalleFalla = String.valueOf(this.falla.getSelectedItem());
         EditText detalle = (EditText) findViewById(R.id.txtDetalleTicket);
-        Ticket dtoTicket = new Ticket();
+
         MantenedorTicket negocioTicket = new MantenedorTicket(this);
+        ticket.setRutUsuario(rut);
+        ticket.setCodigoFalla(Integer.parseInt(codAndDetalleFalla.split("-")[0]));
+        if(!codigoEquipo.equals("Desconocido"))ticket.setCodigoEquipo(codigoEquipo);
+        if(!detalle.toString().isEmpty())ticket.setDetalle(detalle.toString());
+        ticket.setEstado("Creado");
+        boolean ok = negocioTicket.insert(ticket);
+        Log.i("Insert OK", String.valueOf(ok));
 
-        if (falla.getSelectedItemPosition()!= 0){
-            if (!detalle.getText().toString().isEmpty()){
-                dtoTicket.setDetalle(detalle.getText().toString());
-                dtoTicket.setCodigoEquipo(codigoEquipo.getSelectedItem().toString());
-                dtoTicket.setRutUsuario(rut);
-                dtoTicket.setEstado("Creado");
-                dtoTicket.setCodigoFalla(Integer.parseInt(String.valueOf(falla.getSelectedItemId())));
-
-                negocioTicket.insert(dtoTicket);
-            }
-            else{
-                mensaje = "El campo detalle no puede ir vacio";
-            }
-        }
-        else{
-            mensaje = "Debe seleccionar una falla valida";
-        }
-        this.mensaje(mensaje);
-        ticket = dtoTicket;
         return ticket;
     }
 
@@ -111,78 +111,95 @@ public class GenerarTicket extends AppCompatActivity implements AdapterView.OnIt
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-        Log.i("onItemSelected", "OK");
+        int cantidadEnabled = 0;
         switch (adapterView.getId()){
             case R.id.spPisoTicket:
-                Log.i("spPisoTicket", "OK");
-                //Cambios
                 String piso = String.valueOf(adapterView.getItemAtPosition(position));
-                Log.i("Numero piso", piso);
                 if(piso.equals("Seleccione")){
-                    this.sala.setEnabled(false);
-                    this.sala.setAdapter(null);
+                    ++cantidadEnabled;
                 }else {
                     MantenedorSala negocioSala = new MantenedorSala(this);
-                    ArrayList<String> opciones = negocioSala.getCodigoSalaByPiso(Integer.parseInt(piso));
-                    opciones.add(0, "Seleccione");
-                    ArrayAdapter<String> adapterSala = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, opciones);
-                    //
-                    adapterSala.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    this.sala.setAdapter(adapterSala);
-                    //Cambios
+                    this.sala.setAdapter(getArrayAdapter(negocioSala.getCodigoSalaByPiso(Integer.parseInt(piso)),""));
                     this.sala.setEnabled(true);
                 }
-                this.tipoEquipo.setEnabled(false);
-                this.tipoEquipo.setAdapter(null);
-                this.codigoEquipo.setEnabled(false);
-                this.codigoEquipo.setAdapter(null);
-
-                //
+                cantidadEnabled += 3;
                 break;
 
             case R.id.spSalaTicket:
-                Log.i("spSalaTicket", "OK");
-                //Cambios
                 String codSala = String.valueOf(adapterView.getItemAtPosition(position));
-                Log.i("Sala", codSala);
                 if(codSala.equals("Seleccione")){
-                    this.tipoEquipo.setEnabled(false);
-                    this.tipoEquipo.setAdapter(null);
+                    ++cantidadEnabled;
                 }else {
                     MantenedorEquipo mantenedorEquipo = new MantenedorEquipo(this);
-                    ArrayList<String> opciones = mantenedorEquipo.getAllTipoEquipoByCodigoSala(codSala);
-                    opciones.add(0, "Seleccione");
-                    ArrayAdapter<String> adapterTipoEquipo = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, opciones);
-                    adapterTipoEquipo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-                    this.tipoEquipo.setAdapter(adapterTipoEquipo);
+                    this.tipoEquipo.setAdapter(getArrayAdapter(mantenedorEquipo.getAllTipoEquipoByCodigoSala(codSala),""));
                     this.tipoEquipo.setEnabled(true);
                 }
-                this.codigoEquipo.setEnabled(false);
-                this.codigoEquipo.setAdapter(null);
+                cantidadEnabled += 2;
                 break;
 
             case R.id.spTipoEquipoTicket:
-                Log.i("spTipoEquipoTicket", "OK");
                 String tipoEquipo = String.valueOf(adapterView.getItemAtPosition(position));
-                Log.i("Tipo equipo", tipoEquipo);
                 if(tipoEquipo.equals("Seleccione")){
-                    this.codigoEquipo.setEnabled(false);
-                    this.codigoEquipo.setAdapter(null);
+                    ++cantidadEnabled;
                 }else {
                     MantenedorEquipo mantenedorEquipo = new MantenedorEquipo(this);
-                    Log.i("Sala Seleccionada", String.valueOf(this.sala.getSelectedItem()));
-                    ArrayList<String> opciones = mantenedorEquipo.getCodByCodSalaAndTipoEquipo(String.valueOf(this.sala.getSelectedItem()), tipoEquipo);
-                    opciones.add(0, "Seleccione");
-                    ArrayAdapter<String> adapterCodigoEquipo = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, opciones);
-                    adapterCodigoEquipo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    this.codigoEquipo.setAdapter(getArrayAdapter(mantenedorEquipo.getCodByCodSalaAndTipoEquipo(String.valueOf(this.sala.getSelectedItem()), tipoEquipo), "Desconocido"));
+                    this.codigoEquipo.setEnabled(true);
+                }
+                ++cantidadEnabled;
+                break;
 
-                    this.codigoEquipo.setAdapter(adapterCodigoEquipo);
+            case R.id.spCodigoEquipoTicket:
+                String codigoEquipo = String.valueOf(adapterView.getItemAtPosition(position));
+                if(codigoEquipo.equals("Seleccione")){
+                    ++cantidadEnabled;
+                }else {
+                    this.codigoEquipo.setAdapter(getArrayAdapter(null, "Desconocido"));
                     this.codigoEquipo.setEnabled(true);
                 }
                 break;
-                //
+
+            case R.id.spFallaTicket:
+                Button siguiente = (Button) findViewById(R.id.btnSigTicket);
+                if(falla.getSelectedItemPosition() > 0)
+                    siguiente.setEnabled(true);
+                else
+                    siguiente.setEnabled(false);
+                break;
+
         }
+        setSpinnerEnabled(cantidadEnabled);
+    }
+
+    private ArrayAdapter<String> getArrayAdapter(ArrayList<String> datos, String otroDato){
+        if(!otroDato.isEmpty()) datos.add(0, otroDato);
+        if(datos == null){
+            MantenedorFalla mantenedorFalla = new MantenedorFalla(this);
+            datos = mantenedorFalla.getCodFallaAndDescripcion();
+        }
+        datos.add(0, "Seleccione");
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, datos);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        return adapter;
+    }
+
+    private void setSpinnerEnabled(int cantidadEnabled){
+        switch(cantidadEnabled){
+            case 4:
+                this.sala.setEnabled(false);
+                this.sala.setAdapter(null);
+            case 3:
+                this.tipoEquipo.setEnabled(false);
+                this.tipoEquipo.setAdapter(null);
+            case 2:
+                this.codigoEquipo.setEnabled(false);
+                this.codigoEquipo.setAdapter(null);
+            case 1:
+                this.falla.setEnabled(false);
+                this.falla.setAdapter(null);
+        }
+        Button siguiente = (Button) findViewById(R.id.btnSigTicket);
+        siguiente.setEnabled(false);
     }
 
     @Override

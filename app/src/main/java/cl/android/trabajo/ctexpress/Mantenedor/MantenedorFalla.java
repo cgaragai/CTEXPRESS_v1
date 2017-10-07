@@ -23,7 +23,6 @@ public class MantenedorFalla {
         this.context = context;
         tabla = "falla";
         columnas = new ArrayList<String>();
-        columnas.add("codigoFalla");
         columnas.add("descripcionFalla");
         columnas.add("codigoSolucion");
 
@@ -42,6 +41,21 @@ public class MantenedorFalla {
         }
         conector.close();
         return fallas;
+    }
+
+    public ArrayList<String> getCodFallaAndDescripcion() {
+        this.conector = new DB_Helper(this.context);
+        String query = "SELECT codigoFalla, descripcionFalla FROM " + tabla;
+        Cursor resultado = this.conector.select(query);
+        ArrayList<String> codAndDetalles = new ArrayList<>();
+        if (resultado.moveToFirst()) {
+            do {
+                String codAndDetalle = String.valueOf(resultado.getInt(0)) + "-" + resultado.getString(1);
+                codAndDetalles.add(codAndDetalle);
+            } while (resultado.moveToNext());
+        }
+        conector.close();
+        return codAndDetalles;
     }
 
     public Falla getByCodigoFalla(String codigoFalla) {
@@ -63,6 +77,23 @@ public class MantenedorFalla {
         conector.close();
         return id != -1;
 
+    }
+
+    public void insertFallasIniciales() {
+        if(getAll().isEmpty()) {
+            this.conector = new DB_Helper(this.context);
+            ArrayList<String> valores = new ArrayList<>();
+            valores.set(0, "Otro");
+            valores.set(1, null);
+            this.conector.insert(tabla, columnas, valores);
+            valores.add("Equipo no enciende");
+            valores.add("SO001");
+            this.conector.insert(tabla, columnas, valores);
+            valores.set(0, "No muestra imagen");
+            valores.set(1, "SO002");
+            this.conector.insert(tabla, columnas, valores);
+            conector.close();
+        }
     }
 
     public boolean update(Falla falla) {
@@ -94,7 +125,6 @@ public class MantenedorFalla {
 
     private ArrayList<String> valores(Falla falla){
         ArrayList<String> valores = new ArrayList<String>();
-        valores.add(String.valueOf(falla.getCodigoFalla()));
         valores.add(falla.getDescripcionFalla());
         valores.add(falla.getCodigoSolucion());
         return valores;

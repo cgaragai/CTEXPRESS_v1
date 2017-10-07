@@ -21,7 +21,7 @@ public class MantenedorSolucionPropuesta {
     public MantenedorSolucionPropuesta(Context context){
 
         this.context = context;
-        tabla = "solucionPropuesta";
+        tabla = "solucion_propuesta";
         columnas = new ArrayList<String>();
         columnas.add("codigoSolucion");
         columnas.add("descripcionSolucion");
@@ -62,6 +62,20 @@ public class MantenedorSolucionPropuesta {
         conector.close();
         return id != -1;
 
+    }
+
+    public void insertSolucionesIniciales() {
+        if(getAll().isEmpty()) {
+            this.conector = new DB_Helper(this.context);
+            ArrayList<String> valores = new ArrayList<>();
+            valores.add("SO001");
+            valores.add("Revisar enchufe");
+            this.conector.insert(tabla, columnas, valores);
+            valores.set(0, "SO002");
+            valores.set(1, "Apagar y volver a encender equipo");
+            this.conector.insert(tabla, columnas, valores);
+            conector.close();
+        }
     }
 
     public boolean update(SolucionPropuesta solucionPropuesta) {

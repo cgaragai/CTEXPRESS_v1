@@ -13,6 +13,7 @@ import android.widget.Toast;
 import cl.android.trabajo.ctexpress.Mantenedor.MantenedorEquipo;
 import cl.android.trabajo.ctexpress.Mantenedor.MantenedorFalla;
 import cl.android.trabajo.ctexpress.Mantenedor.MantenedorSala;
+import cl.android.trabajo.ctexpress.Mantenedor.MantenedorSolucionPropuesta;
 import cl.android.trabajo.ctexpress.Mantenedor.MantenedorTicket;
 import cl.android.trabajo.ctexpress.Mantenedor.MantenedorUsuario;
 import cl.android.trabajo.ctexpress.Modelo.Equipo;
@@ -42,6 +43,12 @@ public class Login extends AppCompatActivity {
 
         MantenedorEquipo mantenedorEquipo = new MantenedorEquipo(this);
         mantenedorEquipo.insertEquiposIniciales();
+
+        MantenedorSolucionPropuesta mantenedorSolucionPropuesta = new MantenedorSolucionPropuesta(this);
+        mantenedorSolucionPropuesta.insertSolucionesIniciales();
+
+        MantenedorFalla mantenedorFalla = new MantenedorFalla(this);
+        mantenedorFalla.insertFallasIniciales();
     }
 
     public void ingresar(View view) {
