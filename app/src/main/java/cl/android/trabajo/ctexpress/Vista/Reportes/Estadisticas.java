@@ -11,6 +11,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import cl.android.trabajo.ctexpress.Mantenedor.MantenedorTicket;
@@ -48,7 +49,7 @@ public class Estadisticas extends AppCompatActivity implements AdapterView.OnIte
         ArrayAdapter<String> adapter;
         switch (tipoBusqueda){
             case "Ticket":
-                String[] detalleTicket ={"Seleccione","Activo","Cerrado", "Solucion"};
+                String[] detalleTicket ={"Seleccione","Abierto","Asignado","AutoSolucionado","Solucionado"};
                 adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,detalleTicket);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinner.setAdapter(adapter);
@@ -62,7 +63,7 @@ public class Estadisticas extends AppCompatActivity implements AdapterView.OnIte
                 this.detalle.setEnabled(true);
                 break;
             case "Tecnico":
-                String[] detalleTecnico = {"Seleccione","Ticket Asignados"};
+                String[] detalleTecnico = {"Seleccione","Cantidad Ticket Asignados"};
                 adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,detalleTecnico);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinner.setAdapter(adapter);
@@ -81,54 +82,54 @@ public class Estadisticas extends AppCompatActivity implements AdapterView.OnIte
 
     public void obtenerEstadisticas(View view) {
         String posPrincipal = this.principal.getSelectedItem().toString();
-        int posDetalle = this.detalle.getSelectedItemPosition();
+        String posDetalle = this.detalle.getSelectedItem().toString();
         ListView auxListView = (ListView) findViewById(R.id.listEstadistica);
 
         switch (posPrincipal){
             case "Ticket":
-                MantenedorTicket mantenedorTicket = new MantenedorTicket(this);
-                switch (posDetalle){
-                    case 0:
-                        this.mensaje("Escoja un detalle valido");
-                        break;
-                    case 1:
-                        ArrayList<Ticket> auxList = mantenedorTicket.getAllByEstado("Creado");
-                        String[] lista = new String[auxList.size()];
-                        if (auxList.size() > 0) {
-                            for (int i = 0; i < auxList.size(); i++)
-                                lista[i] = "Codigo :" + auxList.get(i).getCodigoTicket() + " Tecnico:" + auxList.get(i).getRutTecnico() + " Estado: " + auxList.get(i).getEstado();
-                            auxListView.setAdapter(new ArrayAdapter(this, android.R.layout.simple_list_item_1, lista));
+                if (detalle.getSelectedItemPosition()>0){
+                    MantenedorTicket mantenedorTicket = new MantenedorTicket(this);
+                    List<Ticket> ticketList = mantenedorTicket.getAllByEstado(posDetalle);
+                    String[] lista = new String[ticketList.size()];
+                    Iterator iter = ticketList.iterator();
+                    int pos = 0;
+                    if (ticketList.size() > 0) {
+                        while (iter.hasNext()){
+                            Ticket ticket = new Ticket();
+                            ticket = (Ticket) iter.next();
+                            lista[pos] ="Ticket ID: "+ticket.getCodigoTicket()+ " Usuario:" + ticket.getRutUsuario() + " Estado: " + ticket.getEstado();
+                            pos++;
                         }
-                        break;
-                    case 2:
-                        ArrayList<Ticket> auxList2 = mantenedorTicket.getAllByEstado("Cerrado");
-                        String[] lista2 = new String[auxList2.size()];
-                        if (auxList2.size() > 0)
-                            for (int i=0;i < auxList2.size();i++)
-                                lista2[i] = "Codigo :"+ auxList2.get(i).getCodigoTicket() + " Tecnico:"+ auxList2.get(i).getRutTecnico()+" Estado: "+ auxList2.get(i).getEstado();
-                        auxListView.setAdapter(new ArrayAdapter(this,android.R.layout.simple_list_item_1,lista2));
-                        break;
-                    case 3:
-                        ArrayList<Ticket> auxList3 = mantenedorTicket.getAllByEstado("Solucion");
-                        String[] lista3 = new String[auxList3.size()];
-                        if (auxList3.size() > 0)
-                            for (int i=0;i < auxList3.size();i++)
-                                lista3[i] = "Codigo :"+ auxList3.get(i).getCodigoTicket() + " Tecnico:"+ auxList3.get(i).getRutTecnico()+" Estado: "+ auxList3.get(i).getEstado();
-                        auxListView.setAdapter(new ArrayAdapter(this,android.R.layout.simple_list_item_1,lista3));
-                        break;
+                        auxListView.setAdapter(new ArrayAdapter(this, android.R.layout.simple_list_item_1, lista));
+                    }
                 }
+                else{this.mensaje("Seleccione un detalle valido");}
                 break;
             case "Docente":
-                switch (posDetalle){
-                    case 0:
-                        this.mensaje("Seleccione un detalle valido");
-                        break;
-                    case 1:
-
-                        break;
+                if (detalle.getSelectedItemPosition()>0){
+                    MantenedorTicket mantenedorTicket = new MantenedorTicket(this);
+                    ArrayList<String> docenteList = mantenedorTicket.getAllByProfesor();
+                    String[] lista = new String[docenteList.size()];
+                    if (docenteList.size() > 0) {
+                        for (int i = 0; i < docenteList.size(); i++)
+                            lista[i] = docenteList.get(i);
+                        auxListView.setAdapter(new ArrayAdapter(this, android.R.layout.simple_list_item_1, lista));
+                    }
                 }
+                else{this.mensaje("Seleccione un detalle valido");}
                 break;
             case "Tecnico":
+                if (detalle.getSelectedItemPosition()>0){
+                    MantenedorTicket mantenedorTicket = new MantenedorTicket(this);
+                    ArrayList<String> tecnicoList = mantenedorTicket.getAllByTecnico();
+                    String[] lista = new String[tecnicoList.size()];
+                    if (tecnicoList.size() > 0) {
+                        for (int i = 0; i < tecnicoList.size(); i++)
+                            lista[i] = tecnicoList.get(i);
+                        auxListView.setAdapter(new ArrayAdapter(this, android.R.layout.simple_list_item_1, lista));
+                    }
+                }
+                else{this.mensaje("Seleccione un detalle valido");}
                 break;
         }
     }

@@ -63,15 +63,28 @@ public class MantenedorTicket {
         return tickets;
     }
 
-    public ArrayList<Ticket> getAllByProfesor() {
+    public ArrayList<String> getAllByTecnico() {
         this.conector = new DB_Helper(this.context);
-        String query = "SELECT rutUsuario, Count(codigoTicket) FROM " + tabla +" GROUP BY rutUsuario";
+        String query = "SELECT rutTecnico, Count(codigoTicket) as cantidad FROM " + tabla +" GROUP BY rutTecnico";
         Cursor resultado = this.conector.select(query);
-        ArrayList<Ticket> tickets = new ArrayList<Ticket>();
+        ArrayList<String> tickets = new ArrayList<String>();
         if (resultado.moveToFirst()) {
             do {
-                Ticket ticket = this.setTicket(resultado);
-                tickets.add(ticket);
+                tickets.add("Rut Tecnico: "+resultado.getString(0)+" Cantidad de ticket: "+resultado.getString(1));
+            } while (resultado.moveToNext());
+        }
+        conector.close();
+        return tickets;
+    }
+
+    public ArrayList<String> getAllByProfesor() {
+        this.conector = new DB_Helper(this.context);
+        String query = "SELECT rutUsuario, Count(codigoTicket) as cantidad FROM " + tabla +" GROUP BY rutUsuario";
+        Cursor resultado = this.conector.select(query);
+        ArrayList<String> tickets = new ArrayList<String>();
+        if (resultado.moveToFirst()) {
+            do {
+                tickets.add("Rut Usuario: "+resultado.getString(0)+" Cantidad de ticket: "+resultado.getString(1));
             } while (resultado.moveToNext());
         }
         conector.close();
