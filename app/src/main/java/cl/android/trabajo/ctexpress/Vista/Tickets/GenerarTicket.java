@@ -4,13 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -21,7 +21,6 @@ import cl.android.trabajo.ctexpress.Mantenedor.MantenedorSala;
 import cl.android.trabajo.ctexpress.Mantenedor.MantenedorTicket;
 import cl.android.trabajo.ctexpress.Modelo.Ticket;
 import cl.android.trabajo.ctexpress.R;
-import cl.android.trabajo.ctexpress.Vista.Main.MainDocente;
 
 /**
  * Created by Leonardo on 30-09-2017.
@@ -29,7 +28,9 @@ import cl.android.trabajo.ctexpress.Vista.Main.MainDocente;
 
 public class GenerarTicket extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
     private String rut;
-    private Spinner piso,sala,codigoEquipo,tipoEquipo, falla;
+    private Spinner piso,sala,codigoEquipo,tipoEquipo, falla, estado, rutTecnico;
+    private TextView rutDocente;
+    private Ticket ticketLocal;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,6 +43,10 @@ public class GenerarTicket extends AppCompatActivity implements AdapterView.OnIt
         this.tipoEquipo = (Spinner) findViewById(R.id.spTipoEquipoTicket);
         this.falla = (Spinner) findViewById(R.id.spFallaTicket);
 
+        this.estado = (Spinner) findViewById(R.id.spEstadoTicket);
+        this.rutTecnico = (Spinner) findViewById(R.id.spRutTecnicoTicket);
+        this.rutDocente = (TextView) findViewById(R.id.tvRutDocenteTicket);
+
         cargarSpinnerPiso();
 
         this.piso.setOnItemSelectedListener(this);
@@ -49,6 +54,29 @@ public class GenerarTicket extends AppCompatActivity implements AdapterView.OnIt
         this.tipoEquipo.setOnItemSelectedListener(this);
         this.codigoEquipo.setOnItemSelectedListener(this);
         this.falla.setOnItemSelectedListener(this);
+
+        if(rut.equals("")) {
+            Button btnEliminar = (Button) findViewById(R.id.btnEliminar);
+            btnEliminar.setEnabled(true);
+            btnEliminar.setVisibility(View.VISIBLE);
+
+            this.estado.setOnItemSelectedListener(this);
+            TextView tvEstado = (TextView) findViewById(R.id.tvEstadoTicket);
+            tvEstado.setVisibility(View.VISIBLE);
+
+            Button btnSiguiente = (Button) findViewById(R.id.btnSigTicket);
+            btnSiguiente.setText("Actualizar");
+
+            this.rutTecnico.setVisibility(View.VISIBLE);
+            TextView tvRutTecnico = (TextView) findViewById(R.id.tvRutTecnico);
+            tvRutTecnico.setVisibility(View.VISIBLE);
+
+            this.rutDocente.setVisibility(View.VISIBLE);
+            TextView tvRutDocente = (TextView) findViewById(R.id.tvRutDocente);
+            tvRutDocente.setVisibility(View.VISIBLE);
+        }
+
+        ticketLocal = (Ticket) getIntent().getSerializableExtra("Ticket");
 
     }
 
@@ -198,7 +226,7 @@ public class GenerarTicket extends AppCompatActivity implements AdapterView.OnIt
                 this.falla.setEnabled(false);
                 this.falla.setAdapter(null);
             case 0:
-                siguiente.setEnabled(false);
+                if(!rut.equals(""))siguiente.setEnabled(false);
                 break;
             default:
                 siguiente.setEnabled(true);
@@ -208,5 +236,8 @@ public class GenerarTicket extends AppCompatActivity implements AdapterView.OnIt
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+
+    public void eliminar(View view) {
     }
 }

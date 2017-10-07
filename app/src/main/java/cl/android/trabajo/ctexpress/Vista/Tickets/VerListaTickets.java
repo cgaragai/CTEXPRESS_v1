@@ -42,6 +42,9 @@ public class VerListaTickets extends AppCompatActivity {
             case "Asignado":
                 tickets = mantenedorTicket.getAllByEstadoAndRutTecnico(estado, rut);
                 break;
+            default:
+                tickets = mantenedorTicket.getAll();
+                break;
         }
 
         Log.i("tickets size", String.valueOf(tickets.size()));
@@ -64,6 +67,9 @@ public class VerListaTickets extends AppCompatActivity {
                         mensaje("Ticket codigo " + ticket.getCodigoTicket() + " asignado a técnico rut " + ticket.getRutTecnico());
                     else
                         mensaje("Error al asignar ticket");
+                }
+                if(estado.equals("")){
+
                 }
 
             }

@@ -68,6 +68,7 @@ public class Solucion extends AppCompatActivity {
             Log.i("Update", "OK");
             Intent intent = new Intent(this, MainDocente.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("rutUsuario", ticket.getRutUsuario());
             startActivity(intent);
         }
     }
