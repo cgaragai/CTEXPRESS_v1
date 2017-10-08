@@ -85,6 +85,24 @@ public class MantenedorUsuario{
             valores.set(2, "Godoy");
             valores.set(3, "lg@ctexpress");
             this.conector.insert(tabla, columnas, valores);
+            valores.set(0, "1-2");
+            valores.set(1, "Docente");
+            valores.set(2, "test");
+            valores.set(3, "docente@ctexpress");
+            valores.set(5,"Docente");
+            this.conector.insert(tabla, columnas, valores);
+            valores.set(0, "1-2");
+            valores.set(1, "Administrativo");
+            valores.set(2, "test");
+            valores.set(3, "administrativo@ctexpress");
+            valores.set(5,"Administrativo");
+            this.conector.insert(tabla, columnas, valores);
+            valores.set(0, "1-2");
+            valores.set(1, "Tecnico");
+            valores.set(2, "test");
+            valores.set(3, "tecnico@ctexpress");
+            valores.set(5,"Tecnico");
+            this.conector.insert(tabla, columnas, valores);
             conector.close();
         }
     }

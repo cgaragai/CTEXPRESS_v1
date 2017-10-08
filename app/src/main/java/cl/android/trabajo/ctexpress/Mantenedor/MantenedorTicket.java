@@ -106,7 +106,7 @@ public class MantenedorTicket {
         return tickets;
     }
 
-    public Ticket getByCodigoTicket(String codigoTicket) {
+    public Ticket getByCodigoTicket(int codigoTicket) {
         this.conector = new DB_Helper(this.context);
         String query = "SELECT * FROM " + tabla + " WHERE codigoTicket = " + codigoTicket;
         Cursor resultado = this.conector.select(query);
@@ -114,6 +114,7 @@ public class MantenedorTicket {
         if (resultado.moveToFirst()) {
             ticket = this.setTicket(resultado);
         }
+        else {ticket = null;}
         conector.close();
         return ticket;
     }
