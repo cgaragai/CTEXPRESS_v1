@@ -28,6 +28,7 @@ public class MantenedorTicket {
         columnas.add("codigoFalla");
         columnas.add("codigoEquipo");
         columnas.add("detalle");
+        columnas.add("estado");
 
     }
 
@@ -100,16 +101,18 @@ public class MantenedorTicket {
         ticket.setCodigoFalla(resultado.getInt(2));
         ticket.setCodigoEquipo(resultado.getString(3));
         ticket.setDetalle(resultado.getString(4));
+        ticket.setDetalle(resultado.getString(5));
         return ticket;
     }
 
     private ArrayList<String> valores(Ticket ticket){
         ArrayList<String> valores = new ArrayList<String>();
-        valores.add(ticket.getCodigoTicket());
+        valores.add(String.valueOf(ticket.getCodigoTicket()));
         valores.add(ticket.getRutUsuario());
         valores.add(Integer.toString(ticket.getCodigoFalla()));
         valores.add(ticket.getCodigoEquipo());
         valores.add(ticket.getDetalle());
+        valores.add(ticket.getEstado());
         return valores;
     }
 }

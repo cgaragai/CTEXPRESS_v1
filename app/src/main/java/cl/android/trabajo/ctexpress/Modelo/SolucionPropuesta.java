@@ -16,12 +16,12 @@ public class SolucionPropuesta {
         this.descripcionSolucion = descripcionSolucion;
     }
 
-    public String getCodigoSOlucion() {
+    public String getCodigoSolucion() {
         return codigoSolucion;
     }
 
-    public void setCodigoSOlucion(String codigoSOlucion) {
-        this.codigoSolucion = codigoSOlucion;
+    public void setCodigoSolucion(String codigoSolucion) {
+        this.codigoSolucion = codigoSolucion;
     }
 
     public String getDescripcionSolucion() {

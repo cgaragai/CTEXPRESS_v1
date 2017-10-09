@@ -70,7 +70,7 @@ public class MantenedorSolucionPropuesta {
     public boolean update(SolucionPropuesta solucionPropuesta) {
         this.conector = new DB_Helper(this.context);
         ArrayList<String> valores = this.valores(solucionPropuesta);
-        String condicion = "codigoSolucion = " + solucionPropuesta.getCodigoSOlucion();
+        String condicion = "codigoSolucion = " + solucionPropuesta.getCodigoSolucion();
         int cantidadAfectados = this.conector.update(tabla, columnas, valores, condicion);
         conector.close();
         if(cantidadAfectados > 0)
@@ -92,14 +92,14 @@ public class MantenedorSolucionPropuesta {
 
     private SolucionPropuesta setSolucionPropuesta(Cursor resultado){
         SolucionPropuesta solucionPropuesta = new SolucionPropuesta();
-        solucionPropuesta.setCodigoSOlucion(resultado.getString(0));
+        solucionPropuesta.setCodigoSolucion(resultado.getString(0));
         solucionPropuesta.setDescripcionSolucion(resultado.getString(1));
         return solucionPropuesta;
     }
 
     private ArrayList<String> valores(SolucionPropuesta solucionPropuesta){
         ArrayList<String> valores = new ArrayList<String>();
-        valores.add(solucionPropuesta.getCodigoSOlucion());
+        valores.add(solucionPropuesta.getCodigoSolucion());
         valores.add(solucionPropuesta.getDescripcionSolucion());
         return valores;
     }

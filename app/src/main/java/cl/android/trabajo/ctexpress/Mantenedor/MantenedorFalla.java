@@ -101,7 +101,7 @@ public class MantenedorFalla {
 
     private ArrayList<String> valores(Falla falla){
         ArrayList<String> valores = new ArrayList<String>();
-        valores.add(falla.getCodigoFalla());
+        valores.add(String.valueOf(falla.getCodigoFalla()));
         valores.add(falla.getDescripcionFalla());
         valores.add(falla.getCodigoSolucion());
         return valores;
