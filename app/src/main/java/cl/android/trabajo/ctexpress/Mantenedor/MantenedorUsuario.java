@@ -82,7 +82,7 @@ public class MantenedorUsuario{
             valores.add("Garagai");
             valores.add("cg@ctexpress");
             valores.add("abc123");
-            valores.add("admin");
+            valores.add("Admin");
             this.conector.insert(tabla, columnas, valores);
             valores.set(0, "1-2");
             valores.set(1, "Leonardo");

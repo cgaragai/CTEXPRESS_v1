@@ -28,6 +28,8 @@
             android:parentActivityName=".Vista.Login.Login"></activity>
         <activity android:name=".Vista.Usuarios.GenerarUsuario"
             android:parentActivityName=".Vista.Main.MainAdmin"></activity>
+        <activity android:name=".Vista.Tickets.GenerarTicket"
+            android:parentActivityName=".Vista.Main.MainDocente"></activity>
     </application>
 
 </manifest>
