@@ -81,10 +81,13 @@ public class Estadisticas extends AppCompatActivity implements AdapterView.OnIte
     }
 
     public void obtenerEstadisticas(View view) {
-        String posPrincipal = this.principal.getSelectedItem().toString();
-        String posDetalle = this.detalle.getSelectedItem().toString();
+        String posPrincipal = "";
+        String posDetalle = "";
         ListView auxListView = (ListView) findViewById(R.id.listEstadistica);
-
+        if (principal.getSelectedItemPosition()>0){
+            posPrincipal = this.principal.getSelectedItem().toString();
+            posDetalle = this.detalle.getSelectedItem().toString();
+        }
         switch (posPrincipal){
             case "Ticket":
                 if (detalle.getSelectedItemPosition()>0){
@@ -130,6 +133,9 @@ public class Estadisticas extends AppCompatActivity implements AdapterView.OnIte
                     }
                 }
                 else{this.mensaje("Seleccione un detalle valido");}
+                break;
+            default:
+                this.mensaje("Seleccione un campo valido");
                 break;
         }
     }

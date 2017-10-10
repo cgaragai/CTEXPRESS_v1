@@ -51,25 +51,27 @@ public class BuscarTicket extends AppCompatActivity {
         TextView detalle = (TextView) findViewById(R.id.lblDetalle);
         TextView estado = (TextView) findViewById(R.id.lblEstado);
         EditText buscarTicket = (EditText) findViewById(R.id.txtBuscarTicket);
-        MantenedorTicket mantenedorTicket = new MantenedorTicket(this);
-        int codigoBuscado = Integer.valueOf(buscarTicket.getText().toString());
-        Ticket ticket = mantenedorTicket.getByCodigoTicket(codigoBuscado);
+        if (!buscarTicket.getText().toString().isEmpty()){
+            MantenedorTicket mantenedorTicket = new MantenedorTicket(this);
+            int codigoBuscado = Integer.valueOf(buscarTicket.getText().toString());
+            Ticket ticket = mantenedorTicket.getByCodigoTicket(codigoBuscado);
+            if (!ticket.equals(null)){
+                codigoTicket.setText("Codigo ticket: "+ticket.getCodigoTicket());
+                usuario.setText("Usuario: "+ticket.getRutUsuario());
+                tecnico.setText("Tecnico: "+ticket.getRutTecnico());
+                codigoEquipo.setText("Codigo Equipo: "+ticket.getCodigoEquipo());
+                codigoFalla.setText("Codigo Falla: "+ticket.getCodigoFalla());
+                detalle.setText("Detalle Ticket: "+ticket.getDetalle());
+                estado.setText("Estado Ticket: "+ticket.getEstado());
 
-        if (!ticket.equals(null)){
-            codigoTicket.setText("Codigo ticket: "+ticket.getCodigoTicket());
-            usuario.setText("Usuario: "+ticket.getRutUsuario());
-            tecnico.setText("Tecnico: "+ticket.getRutTecnico());
-            codigoEquipo.setText("Codigo Equipo: "+ticket.getCodigoEquipo());
-            codigoFalla.setText("Codigo Falla: "+ticket.getCodigoFalla());
-            detalle.setText("Detalle Ticket: "+ticket.getDetalle());
-            estado.setText("Estado Ticket: "+ticket.getEstado());
-
-            habilitarLabel();
+                habilitarLabel();
+            }
+            else{
+                this.mensaje("No existe el ticket buscado");
+                ocultarLabel();
+            }
         }
-        else{
-            this.mensaje("No existe el ticket buscado");
-            ocultarLabel();
-        }
+        else {this.mensaje("Ingrese un campo valido");}
     }
 
     private void habilitarLabel(){
