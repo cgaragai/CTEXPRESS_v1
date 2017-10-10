@@ -48,6 +48,21 @@ public class MantenedorUsuario{
         return usuarios;
     }
 
+    public ArrayList<String> getAllRutOfTipo(String tipoUsuario) {
+        this.conector = new DB_Helper(this.context);
+        String query = "SELECT rut FROM " + tabla + " WHERE tipoUsuario = '" + tipoUsuario + "'";
+        Cursor resultado = this.conector.select(query);
+        ArrayList<String> ruts = new ArrayList<>();
+        if (resultado.moveToFirst()) {
+            do {
+                String rut = resultado.getString(0);
+                ruts.add(rut);
+            } while (resultado.moveToNext());
+        }
+        conector.close();
+        return ruts;
+    }
+
     public Usuario getByRut(String rut) {
         this.conector = new DB_Helper(this.context);
         String query = "SELECT * FROM " + tabla + " WHERE rut = '" + rut + "'";
@@ -85,21 +100,19 @@ public class MantenedorUsuario{
             valores.set(2, "Godoy");
             valores.set(3, "lg@ctexpress");
             this.conector.insert(tabla, columnas, valores);
-            valores.set(0, "1-2");
+            valores.set(0, "2-7");
             valores.set(1, "Docente");
             valores.set(2, "test");
             valores.set(3, "docente@ctexpress");
             valores.set(5,"Docente");
             this.conector.insert(tabla, columnas, valores);
-            valores.set(0, "1-2");
+            valores.set(0, "3-5");
             valores.set(1, "Administrativo");
-            valores.set(2, "test");
             valores.set(3, "administrativo@ctexpress");
             valores.set(5,"Administrativo");
             this.conector.insert(tabla, columnas, valores);
-            valores.set(0, "1-2");
+            valores.set(0, "4-3");
             valores.set(1, "Tecnico");
-            valores.set(2, "test");
             valores.set(3, "tecnico@ctexpress");
             valores.set(5,"Tecnico");
             this.conector.insert(tabla, columnas, valores);

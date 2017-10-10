@@ -39,6 +39,9 @@ public class MainAdmin extends AppCompatActivity {
 
     public void gestionarTickets(View view) {
         Intent intent = new Intent(this, VerListaTickets.class);
+        intent.putExtra("Main", "MainAdmin");
+        intent.putExtra("estado", "");
+        intent.putExtra("rutUsuario", "");
         startActivity(intent);
     }
 }

@@ -1,8 +1,11 @@
 package cl.android.trabajo.ctexpress.Vista.Tickets;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -14,6 +17,8 @@ import cl.android.trabajo.ctexpress.Adapters.AdapterTickets;
 import cl.android.trabajo.ctexpress.Mantenedor.MantenedorTicket;
 import cl.android.trabajo.ctexpress.Modelo.Ticket;
 import cl.android.trabajo.ctexpress.R;
+import cl.android.trabajo.ctexpress.Vista.Main.MainAdmin;
+import cl.android.trabajo.ctexpress.Vista.Main.MainTecnico;
 
 /**
  * Created by Elaps-Merlina on 05-10-2017.
@@ -21,18 +26,26 @@ import cl.android.trabajo.ctexpress.R;
 
 public class VerListaTickets extends AppCompatActivity {
 
-    private String rut;
-    private String estado;
+    private String rut, estado, main;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ver_lista_tickets);
+
+        if(getSupportActionBar() != null){
+            Log.i("ActionBar", "not null");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }else{
+            Log.i("ActionBar", "null");
+        }
 
         ListView lvTickets = (ListView) findViewById(R.id.lvListaTickets);
         MantenedorTicket mantenedorTicket = new MantenedorTicket(this);
 
         estado = getIntent().getStringExtra("estado");
         rut = getIntent().getStringExtra("rutUsuario");
+        main = getIntent().getStringExtra("Main");
 
         ArrayList<Ticket> tickets = new ArrayList<>();
         switch(estado){
@@ -69,15 +82,43 @@ public class VerListaTickets extends AppCompatActivity {
                         mensaje("Error al asignar ticket");
                 }
                 if(estado.equals("")){
-
+                    Ticket ticket = (Ticket) parent.getItemAtPosition(position);
+                    editarTicket(ticket);
                 }
 
             }
         });
     }
 
+    private void editarTicket(Ticket ticket){
+        Intent intent = new Intent(this, GenerarTicket.class);
+        intent.putExtra("Ticket", ticket);
+        intent.putExtra("rutUsuario", "");
+        startActivity(intent);
+    }
+
     private void mensaje(String mensaje){
         Toast.makeText(this,mensaje,Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onBackPressed() {
+        if(main.equals("MainAdmin")) {
+            finish();
+        } else if (main.equals("MainTecnico")) {
+            finish();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        boolean ok = false;
+        if(item.getItemId() == android.R.id.home){
+            ok = true;
+            finish();
+        }
+        return ok;
+    }
 }

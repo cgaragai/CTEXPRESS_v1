@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,6 +20,9 @@ import cl.android.trabajo.ctexpress.Mantenedor.MantenedorEquipo;
 import cl.android.trabajo.ctexpress.Mantenedor.MantenedorFalla;
 import cl.android.trabajo.ctexpress.Mantenedor.MantenedorSala;
 import cl.android.trabajo.ctexpress.Mantenedor.MantenedorTicket;
+import cl.android.trabajo.ctexpress.Mantenedor.MantenedorUsuario;
+import cl.android.trabajo.ctexpress.Modelo.Equipo;
+import cl.android.trabajo.ctexpress.Modelo.Sala;
 import cl.android.trabajo.ctexpress.Modelo.Ticket;
 import cl.android.trabajo.ctexpress.R;
 
@@ -47,36 +51,22 @@ public class GenerarTicket extends AppCompatActivity implements AdapterView.OnIt
         this.rutTecnico = (Spinner) findViewById(R.id.spRutTecnicoTicket);
         this.rutDocente = (TextView) findViewById(R.id.tvRutDocenteTicket);
 
-        cargarSpinnerPiso();
-
         this.piso.setOnItemSelectedListener(this);
         this.sala.setOnItemSelectedListener(this);
         this.tipoEquipo.setOnItemSelectedListener(this);
         this.codigoEquipo.setOnItemSelectedListener(this);
         this.falla.setOnItemSelectedListener(this);
 
-        if(rut.equals("")) {
-            Button btnEliminar = (Button) findViewById(R.id.btnEliminar);
-            btnEliminar.setEnabled(true);
-            btnEliminar.setVisibility(View.VISIBLE);
-
-            this.estado.setOnItemSelectedListener(this);
-            TextView tvEstado = (TextView) findViewById(R.id.tvEstadoTicket);
-            tvEstado.setVisibility(View.VISIBLE);
-
-            Button btnSiguiente = (Button) findViewById(R.id.btnSigTicket);
-            btnSiguiente.setText("Actualizar");
-
-            this.rutTecnico.setVisibility(View.VISIBLE);
-            TextView tvRutTecnico = (TextView) findViewById(R.id.tvRutTecnico);
-            tvRutTecnico.setVisibility(View.VISIBLE);
-
-            this.rutDocente.setVisibility(View.VISIBLE);
-            TextView tvRutDocente = (TextView) findViewById(R.id.tvRutDocente);
-            tvRutDocente.setVisibility(View.VISIBLE);
-        }
-
+        cargarSpinners();
         ticketLocal = (Ticket) getIntent().getSerializableExtra("Ticket");
+
+        if(rut.equals("")) {
+            cambiarEstado(View.VISIBLE,true);
+            cargarDatos();
+            this.rutTecnico.setOnItemSelectedListener(this);
+        }else{
+            cambiarEstado(View.INVISIBLE,false);
+        }
 
     }
 
@@ -98,15 +88,12 @@ public class GenerarTicket extends AppCompatActivity implements AdapterView.OnIt
     public Ticket tempTicket(){
         Ticket ticket = new Ticket();
         String codigoEquipo = String.valueOf(this.codigoEquipo.getSelectedItem());
-        String codAndDetalleFalla = String.valueOf(this.falla.getSelectedItem());
         EditText etDetalle = (EditText) findViewById(R.id.txtDetalleTicket);
 
         MantenedorTicket negocioTicket = new MantenedorTicket(this);
         ticket.setRutUsuario(rut);
 
-        String[] codAndDetalle = codAndDetalleFalla.split("-");
-
-        ticket.setCodigoFalla(Integer.parseInt(codAndDetalle[0]));
+        ticket.setCodigoFalla(getSoloIdFalla(String.valueOf(this.falla.getSelectedItem())));
         if(!codigoEquipo.equals("Desconocido"))ticket.setCodigoEquipo(codigoEquipo);
         ticket.setDetalle(etDetalle.getText().toString());
 
@@ -120,19 +107,38 @@ public class GenerarTicket extends AppCompatActivity implements AdapterView.OnIt
         return ticket;
     }
 
+    private void cargarSpinners(){
+        cargarSpinnerPiso();
+        if(rut.equals("")){
+            cargarSpinnerEstado();
+            cargarSpinnerRutTecnico();
+        }
+    }
+
 
     private void cargarSpinnerPiso(){
         MantenedorSala negocioSala = new MantenedorSala(this);
-        //Cambios
         ArrayList<Integer> pisos = negocioSala.getAllPiso();
         ArrayList<String> opciones = new ArrayList<>();
-        opciones.add("Seleccione");
         for(int piso: pisos)
             opciones.add(String.valueOf(piso));
-        ArrayAdapter<String> adapterPiso = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,opciones);
-        //
-        adapterPiso.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        piso.setAdapter(adapterPiso);
+        piso.setAdapter(getArrayAdapter(opciones, ""));
+    }
+
+    private void cargarSpinnerEstado(){
+        ArrayList<String> opciones = new ArrayList<>();
+        opciones.add("Creado");
+        opciones.add("Autosolucionado");
+        opciones.add("Abierto");
+        opciones.add("Asignado");
+        opciones.add("Confirmación");
+        opciones.add("Solucionado");
+        estado.setAdapter(getArrayAdapter(opciones, ""));
+    }
+
+    private void cargarSpinnerRutTecnico(){
+        MantenedorUsuario mantenedorUsuario = new MantenedorUsuario(this);
+        rutTecnico.setAdapter(getArrayAdapter(mantenedorUsuario.getAllRutOfTipo("Tecnico"),"No Asignado"));
     }
 
     private void mensaje(String mensaje){
@@ -193,7 +199,9 @@ public class GenerarTicket extends AppCompatActivity implements AdapterView.OnIt
                 if(falla.getSelectedItemPosition() > 0)
                     cantidadEnabled = -1;
                 break;
+            case R.id.spRutTecnicoTicket:
 
+                break;
         }
         setSpinnerEnabled(cantidadEnabled);
     }
@@ -204,7 +212,7 @@ public class GenerarTicket extends AppCompatActivity implements AdapterView.OnIt
             MantenedorFalla mantenedorFalla = new MantenedorFalla(this);
             datos = mantenedorFalla.getCodFallaAndDescripcion();
         }
-        datos.add(0, "Seleccione");
+        if(!rut.equals("")) datos.add(0, "Seleccione");
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, datos);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         return adapter;
@@ -239,5 +247,63 @@ public class GenerarTicket extends AppCompatActivity implements AdapterView.OnIt
     }
 
     public void eliminar(View view) {
+    }
+
+    private void cargarDatos(){
+        if(ticketLocal == null){
+            mensaje("Error al cargar datos del ticket");
+        }else{
+            MantenedorEquipo mantenedorEquipo = new MantenedorEquipo(this);
+            MantenedorSala mantenedorSala = new MantenedorSala(this);
+
+            Equipo auxEquipo = mantenedorEquipo.getByCodigoEquipo(ticketLocal.getCodigoEquipo());
+            Sala auxSala = mantenedorSala.getByCodigoSala(auxEquipo.getCodigoSala());
+
+            setSpinnerSelection(piso, String.valueOf(auxSala.getPiso()));
+            setSpinnerSelection(sala, auxSala.getCodigoSala());
+            setSpinnerSelection(tipoEquipo, auxEquipo.getTipoEquipo());
+            setSpinnerSelection(codigoEquipo, auxEquipo.getCodigoEquipo());
+            setSpinnerSelection(falla, String.valueOf(ticketLocal.getCodigoFalla()));
+            setSpinnerSelection(estado, ticketLocal.getEstado());
+            rutDocente.setText(ticketLocal.getRutUsuario());
+            setSpinnerSelection(rutTecnico, ticketLocal.getRutTecnico());
+            EditText etDetalle = (EditText) findViewById(R.id.txtDetalleTicket);
+            etDetalle.setText(ticketLocal.getDetalle());
+        }
+    }
+
+    private void setSpinnerSelection(Spinner spinner, String seleccion){
+        for(int i=0; i<spinner.getCount();i++) {
+            String itemSpinner = String.valueOf(spinner.getItemAtPosition(i));
+            if(spinner == falla) itemSpinner = String.valueOf(getSoloIdFalla(itemSpinner));
+            if(itemSpinner.equals(seleccion)){
+                spinner.setSelection(i);
+            }
+        }
+    }
+
+    private int getSoloIdFalla(String codAndDetalleFalla){
+        return Integer.parseInt(codAndDetalleFalla.split("-")[0]);
+    }
+
+    private void cambiarEstado(int v, boolean enable){
+        Button btnEliminar = (Button) findViewById(R.id.btnEliminar);
+        btnEliminar.setEnabled(enable);
+        btnEliminar.setVisibility(v);
+
+        this.estado.setOnItemSelectedListener(this);
+        TextView tvEstado = (TextView) findViewById(R.id.tvEstadoTicket);
+        tvEstado.setVisibility(v);
+
+        Button btnSiguiente = (Button) findViewById(R.id.btnSigTicket);
+        if(enable)btnSiguiente.setText("Actualizar");
+
+        this.rutTecnico.setVisibility(v);
+        TextView tvRutTecnico = (TextView) findViewById(R.id.tvRutTecnico);
+        tvRutTecnico.setVisibility(v);
+
+        this.rutDocente.setVisibility(v);
+        TextView tvRutDocente = (TextView) findViewById(R.id.tvRutDocente);
+        tvRutDocente.setVisibility(v);
     }
 }

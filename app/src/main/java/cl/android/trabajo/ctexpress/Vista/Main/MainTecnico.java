@@ -3,6 +3,7 @@ package cl.android.trabajo.ctexpress.Vista.Main;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 
 import cl.android.trabajo.ctexpress.R;
@@ -15,6 +16,7 @@ public class MainTecnico extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_tecnico);
+        Log.i("Estas en", "MainTecnico");
         rut = getIntent().getStringExtra("rutUsuario");
     }
 
@@ -31,9 +33,11 @@ public class MainTecnico extends AppCompatActivity {
     }
 
     private void irVerListaTickets(String estado){
+
         Intent intent = new Intent(this, VerListaTickets.class);
         intent.putExtra("estado", estado);
         intent.putExtra("rutUsuario", rut);
+        intent.putExtra("Main", "MainTecnico");
         startActivity(intent);
     }
 }
