@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import cl.android.trabajo.ctexpress.R;
+import cl.android.trabajo.ctexpress.Vista.Tickets.VerListaTickets;
 import cl.android.trabajo.ctexpress.Vista.Usuarios.GenerarUsuario;
 import cl.android.trabajo.ctexpress.Vista.Usuarios.GestionUsuarios;
 
@@ -37,8 +38,7 @@ public class MainAdmin extends AppCompatActivity {
     }
 
     public void gestionarTickets(View view) {
-
-
-
+        Intent intent = new Intent(this, VerListaTickets.class);
+        startActivity(intent);
     }
 }
