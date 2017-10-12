@@ -27,6 +27,7 @@ import cl.android.trabajo.ctexpress.Vista.Main.MainTecnico;
 public class VerListaTickets extends AppCompatActivity {
 
     private String rut, estado, main;
+    private ListView lvTickets;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,13 +38,43 @@ public class VerListaTickets extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-        ListView lvTickets = (ListView) findViewById(R.id.lvListaTickets);
-        MantenedorTicket mantenedorTicket = new MantenedorTicket(this);
+        lvTickets = (ListView) findViewById(R.id.lvListaTickets);
+
 
         estado = getIntent().getStringExtra("estado");
         rut = getIntent().getStringExtra("rutUsuario");
         main = getIntent().getStringExtra("Main");
 
+        cargarList();
+        lvTickets.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                if(estado.equals("Abierto")) {
+                    Ticket ticket = (Ticket) parent.getItemAtPosition(position);
+                    ticket.setRutTecnico(rut);
+                    ticket.setEstado("Asignado");
+
+                    MantenedorTicket mantenedorTicket1 = new MantenedorTicket(parent.getContext());
+                    boolean ok = mantenedorTicket1.update(ticket);
+                    if (ok) {
+                        cargarList();
+                        mensaje("Ticket codigo " + ticket.getCodigoTicket() + " asignado a técnico rut " + ticket.getRutTecnico());
+                    }else
+                        mensaje("Error al asignar ticket");
+                }
+                if(estado.equals("")){
+                    Ticket ticket = (Ticket) parent.getItemAtPosition(position);
+                    editarTicket(ticket);
+                }
+
+            }
+        });
+    }
+
+    private void cargarList(){
+        MantenedorTicket mantenedorTicket = new MantenedorTicket(this);
         ArrayList<Ticket> tickets = new ArrayList<>();
         switch(estado){
             case "Abierto":
@@ -59,30 +90,6 @@ public class VerListaTickets extends AppCompatActivity {
 
         AdapterTickets adapterTickets = new AdapterTickets(this, tickets);
         lvTickets.setAdapter(adapterTickets);
-        lvTickets.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                if(estado.equals("Abierto")) {
-                    Ticket ticket = (Ticket) parent.getItemAtPosition(position);
-                    ticket.setRutTecnico(rut);
-                    ticket.setEstado("Asignado");
-
-                    MantenedorTicket mantenedorTicket1 = new MantenedorTicket(parent.getContext());
-                    boolean ok = mantenedorTicket1.update(ticket);
-                    if (ok)
-                        mensaje("Ticket codigo " + ticket.getCodigoTicket() + " asignado a técnico rut " + ticket.getRutTecnico());
-                    else
-                        mensaje("Error al asignar ticket");
-                }
-                if(estado.equals("")){
-                    Ticket ticket = (Ticket) parent.getItemAtPosition(position);
-                    editarTicket(ticket);
-                }
-
-            }
-        });
     }
 
     private void editarTicket(Ticket ticket){

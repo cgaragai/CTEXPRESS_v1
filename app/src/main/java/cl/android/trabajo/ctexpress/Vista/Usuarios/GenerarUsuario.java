@@ -4,12 +4,15 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import java.util.regex.Pattern;
 
 import cl.android.trabajo.ctexpress.Mantenedor.MantenedorUsuario;
 import cl.android.trabajo.ctexpress.Modelo.Usuario;
@@ -61,49 +64,52 @@ public class GenerarUsuario extends AppCompatActivity {
                             Spinner tipoUsuario = (Spinner) findViewById(R.id.spTipoUsuario);
                             if (tipoUsuario.getSelectedItemPosition() > 0) {
                                 EditText etRut = (EditText) findViewById(R.id.txtRutUsuario);
-                                if(existe || !etRut.getText().toString().isEmpty()) {
-                                    String rut = "";
-                                    if(!existe) {
-                                        rut = etRut.getText().toString();
-                                        rut = rut.toUpperCase();
-                                    }
-                                    if(sintaxisRut(rut)) {
-                                        if(validarDigitoVerificador(rut)) {
-                                            MantenedorUsuario auxNegocio = new MantenedorUsuario(this);
+                                if (validarEmail(correo.getText().toString())) {
+                                    if (existe || !etRut.getText().toString().isEmpty()) {
+                                        String rut = "";
+                                        if (!existe) {
+                                            rut = etRut.getText().toString();
+                                            rut = rut.toUpperCase();
+                                        }
+                                        if (sintaxisRut(rut)) {
+                                            if (validarDigitoVerificador(rut)) {
+                                                MantenedorUsuario auxNegocio = new MantenedorUsuario(this);
 
-                                            if(!existe){
-                                                dtoUsuario = new Usuario();
-                                                dtoUsuario.setRut(rut);
-                                            }
-                                            dtoUsuario.setApellido(apellido.getText().toString());
-                                            dtoUsuario.setNombre(nombre.getText().toString());
-                                            dtoUsuario.setCorreo(correo.getText().toString());
-                                            dtoUsuario.setClave(clave.getText().toString());
-                                            dtoUsuario.setTipoUsuario(tipoUsuario.getSelectedItem().toString());
-
-                                            if(existe){
-                                                boolean updateOk = auxNegocio.update(dtoUsuario);
-                                                if(updateOk) mensaje = "Usuario Actualizado";
-                                            }else {
-                                                boolean insertOk = auxNegocio.insert(dtoUsuario);
-                                                if (insertOk) {
-                                                    mensaje = "Usuario Guardado";
-
-                                                    etRut.setText("");
-                                                    nombre.setText("");
-                                                    apellido.setText("");
-                                                    correo.setText("");
-                                                    clave.setText("");
-                                                    tipoUsuario.setSelection(0);
+                                                if (!existe) {
+                                                    dtoUsuario = new Usuario();
+                                                    dtoUsuario.setRut(rut);
                                                 }
+                                                dtoUsuario.setApellido(apellido.getText().toString());
+                                                dtoUsuario.setNombre(nombre.getText().toString());
+                                                dtoUsuario.setCorreo(correo.getText().toString());
+                                                dtoUsuario.setClave(clave.getText().toString());
+                                                dtoUsuario.setTipoUsuario(tipoUsuario.getSelectedItem().toString());
+
+                                                if (existe) {
+                                                    boolean updateOk = auxNegocio.update(dtoUsuario);
+                                                    if (updateOk) mensaje = "Usuario Actualizado";
+                                                } else {
+                                                    boolean insertOk = auxNegocio.insert(dtoUsuario);
+                                                    if (insertOk) {
+                                                        mensaje = "Usuario Guardado";
+
+                                                        etRut.setText("");
+                                                        nombre.setText("");
+                                                        apellido.setText("");
+                                                        correo.setText("");
+                                                        clave.setText("");
+                                                        tipoUsuario.setSelection(0);
+                                                    }
+                                                }
+                                            } else {
+                                                mensaje = "Rut ingresado no válido";
                                             }
-                                        }else{
+                                        } else {
                                             mensaje = "Rut ingresado no válido";
                                         }
-                                    }else{
-                                        mensaje = "Rut ingresado no válido";
                                     }
                                 }
+                                else {mensaje = "Email no válido";}
                             }
                         }
                     }
@@ -241,5 +247,10 @@ public class GenerarUsuario extends AppCompatActivity {
             this.mensaje("Error al eliminar usuario");
         }
 
+    }
+
+    private boolean validarEmail(String email) {
+        Pattern pattern = Patterns.EMAIL_ADDRESS;
+        return pattern.matcher(email).matches();
     }
 }
