@@ -11,6 +11,8 @@ public class Ticket implements Serializable {
     private String rutUsuario;
     private int codigoFalla;
     private String codigoEquipo;
+    private String tipoEquipo;
+    private String codigoSala;
     private String detalle;
     private String estado;
     private String rutTecnico;
@@ -27,6 +29,22 @@ public class Ticket implements Serializable {
         this.detalle = detalle;
         this.estado = estado;
         this.rutTecnico = rutTecnico;
+    }
+
+    public String getTipoEquipo() {
+        return tipoEquipo;
+    }
+
+    public void setTipoEquipo(String tipoEquipo) {
+        this.tipoEquipo = tipoEquipo;
+    }
+
+    public String getCodigoSala() {
+        return codigoSala;
+    }
+
+    public void setCodigoSala(String codigoSala) {
+        this.codigoSala = codigoSala;
     }
 
     public int getCodigoTicket() {

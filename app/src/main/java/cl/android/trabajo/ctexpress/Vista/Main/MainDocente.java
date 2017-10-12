@@ -24,6 +24,7 @@ public class MainDocente extends AppCompatActivity{
     public void crearTicket(View view) {
         Intent intent = new Intent(this, GenerarTicket.class);
         intent.putExtra("rutUsuario",rut);
+        intent.putExtra("anterior", "MainDocente");
         startActivity(intent);
     }
 

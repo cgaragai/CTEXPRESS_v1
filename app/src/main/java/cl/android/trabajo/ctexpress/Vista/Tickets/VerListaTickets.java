@@ -33,11 +33,8 @@ public class VerListaTickets extends AppCompatActivity {
         setContentView(R.layout.ver_lista_tickets);
 
         if(getSupportActionBar() != null){
-            Log.i("ActionBar", "not null");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-        }else{
-            Log.i("ActionBar", "null");
         }
 
         ListView lvTickets = (ListView) findViewById(R.id.lvListaTickets);
@@ -59,8 +56,6 @@ public class VerListaTickets extends AppCompatActivity {
                 tickets = mantenedorTicket.getAll();
                 break;
         }
-
-        Log.i("tickets size", String.valueOf(tickets.size()));
 
         AdapterTickets adapterTickets = new AdapterTickets(this, tickets);
         lvTickets.setAdapter(adapterTickets);
@@ -92,8 +87,10 @@ public class VerListaTickets extends AppCompatActivity {
 
     private void editarTicket(Ticket ticket){
         Intent intent = new Intent(this, GenerarTicket.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("Ticket", ticket);
         intent.putExtra("rutUsuario", "");
+        intent.putExtra("anterior", "VerListaTickets");
         startActivity(intent);
     }
 
@@ -104,9 +101,14 @@ public class VerListaTickets extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if(main.equals("MainAdmin")) {
-            finish();
+            Intent intent = new Intent(this, MainAdmin.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
         } else if (main.equals("MainTecnico")) {
-            finish();
+            Intent intent = new Intent(this, MainTecnico.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("rutUsuario", rut);
+            startActivity(intent);
         } else {
             super.onBackPressed();
         }
@@ -117,7 +119,7 @@ public class VerListaTickets extends AppCompatActivity {
         boolean ok = false;
         if(item.getItemId() == android.R.id.home){
             ok = true;
-            finish();
+            onBackPressed();
         }
         return ok;
     }

@@ -2,6 +2,7 @@ package cl.android.trabajo.ctexpress.Mantenedor;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -210,5 +211,12 @@ public class MantenedorEquipo {
         valores.add(equipo.getTipoEquipo());
         valores.add(equipo.getCodigoSala());
         return valores;
+    }
+
+    public void valoresEquipo(Equipo equipo){
+        Log.i("getCodigoEquipo", equipo.getCodigoEquipo());
+        Log.i("getDescripcion", equipo.getDescripcion());
+        Log.i("getTipoEquipo", equipo.getTipoEquipo());
+        Log.i("getCodigoSala", equipo.getCodigoSala());
     }
 }

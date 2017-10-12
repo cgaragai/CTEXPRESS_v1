@@ -16,7 +16,6 @@ public class MainTecnico extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_tecnico);
-        Log.i("Estas en", "MainTecnico");
         rut = getIntent().getStringExtra("rutUsuario");
     }
 

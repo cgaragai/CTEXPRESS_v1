@@ -55,7 +55,7 @@ public class BuscarTicket extends AppCompatActivity {
             MantenedorTicket mantenedorTicket = new MantenedorTicket(this);
             int codigoBuscado = Integer.valueOf(buscarTicket.getText().toString());
             Ticket ticket = mantenedorTicket.getByCodigoTicket(codigoBuscado);
-            if (!ticket.equals(null)){
+            if (ticket != null){
                 codigoTicket.setText("Codigo ticket: "+ticket.getCodigoTicket());
                 usuario.setText("Usuario: "+ticket.getRutUsuario());
                 tecnico.setText("Tecnico: "+ticket.getRutTecnico());

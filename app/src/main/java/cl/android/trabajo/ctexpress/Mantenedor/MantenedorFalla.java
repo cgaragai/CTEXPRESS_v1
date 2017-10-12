@@ -2,6 +2,7 @@ package cl.android.trabajo.ctexpress.Mantenedor;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -130,5 +131,10 @@ public class MantenedorFalla {
         return valores;
     }
 
+    public void valoresFalla(Falla falla){
+        Log.i("getCodigoFalla", String.valueOf(falla.getCodigoFalla()));
+        Log.i("getDescripcionFalla", falla.getDescripcionFalla());
+        Log.i("getCodigoSolucion", falla.getCodigoSolucion());
+    }
 
 }

@@ -3,6 +3,7 @@ package cl.android.trabajo.ctexpress.Mantenedor;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -164,6 +165,11 @@ public class MantenedorSala {
         valores.add(sala.getCodigoSala());
         valores.add(Integer.toString(sala.getPiso()));
         return valores;
+    }
+
+    public void valoresSala(Sala sala){
+        Log.i("getCodigoSala", sala.getCodigoSala());
+        Log.i("getPiso", String.valueOf(sala.getPiso()));
     }
 
 }
