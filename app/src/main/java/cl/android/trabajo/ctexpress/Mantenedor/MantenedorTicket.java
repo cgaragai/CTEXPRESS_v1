@@ -26,8 +26,8 @@ public class MantenedorTicket {
         columnas = new ArrayList<>();
         columnas.add("rutUsuario");
         columnas.add("codigoFalla");
+        columnas.add("CodigoTipoEquipo");
         columnas.add("codigoEquipo");
-        columnas.add("tipoEquipo");
         columnas.add("codigoSala");
         columnas.add("detalle");
         columnas.add("estado");
@@ -185,8 +185,8 @@ public class MantenedorTicket {
         ticket.setCodigoTicket(resultado.getInt(0));
         ticket.setRutUsuario(resultado.getString(1));
         ticket.setCodigoFalla(resultado.getInt(2));
-        ticket.setCodigoEquipo(resultado.getString(3));
-        ticket.setTipoEquipo(resultado.getString(4));
+        ticket.setCodigoTipoEquipo(resultado.getInt(3));
+        ticket.setCodigoEquipo(resultado.getString(4));
         ticket.setCodigoSala(resultado.getString(5));
         ticket.setDetalle(resultado.getString(6));
         ticket.setEstado(resultado.getString(7));
@@ -198,8 +198,8 @@ public class MantenedorTicket {
         ArrayList<String> valores = new ArrayList<String>();
         valores.add(ticket.getRutUsuario());
         valores.add(Integer.toString(ticket.getCodigoFalla()));
+        valores.add(String.valueOf(ticket.getCodigoTipoEquipo()));
         valores.add(ticket.getCodigoEquipo());
-        valores.add(ticket.getTipoEquipo());
         valores.add(ticket.getCodigoSala());
         valores.add(ticket.getDetalle());
         valores.add(ticket.getEstado());
@@ -213,8 +213,8 @@ public class MantenedorTicket {
         if(ticketA.getCodigoTicket() == ticketB.getCodigoTicket()) diferente = true;
         else if(ticketA.getRutUsuario().equals(ticketB.getRutUsuario())) diferente = true;
         else if(ticketA.getCodigoFalla() == ticketB.getCodigoFalla()) diferente = true;
+        else if(ticketA.getCodigoTipoEquipo() == ticketB.getCodigoTipoEquipo()) diferente = true;
         else if(ticketA.getCodigoEquipo().equals(ticketB.getCodigoEquipo())) diferente = true;
-        else if(ticketA.getTipoEquipo().equals(ticketB.getTipoEquipo())) diferente = true;
         else if(ticketA.getCodigoSala().equals(ticketB.getCodigoSala())) diferente = true;
         else if(ticketA.getDetalle().equals(ticketB.getDetalle())) diferente = true;
         else if(ticketA.getEstado().equals(ticketB.getEstado())) diferente = true;
@@ -229,8 +229,8 @@ public class MantenedorTicket {
         Log.i("getCodigoTicket", String.valueOf(ticket.getCodigoTicket()));
         Log.i("getRutUsuario", ticket.getRutUsuario());
         Log.i("getCodigoFalla", String.valueOf(ticket.getCodigoFalla()));
+        Log.i("getCodigoTipoEquipo", String.valueOf(ticket.getCodigoTipoEquipo()));
         if(ticket.getCodigoEquipo() != null) Log.i("getCodigoEquipo", ticket.getCodigoEquipo());
-        Log.i("getTipoEquipo", ticket.getTipoEquipo());
         Log.i("getCodigoSala", ticket.getCodigoSala());
         if(ticket.getDetalle() != null) Log.i("getDetalle", ticket.getDetalle());
         Log.i("getEstado", ticket.getEstado());

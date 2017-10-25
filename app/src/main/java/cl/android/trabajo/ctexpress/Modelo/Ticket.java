@@ -10,8 +10,8 @@ public class Ticket implements Serializable {
     private int codigoTicket;
     private String rutUsuario;
     private int codigoFalla;
+    private int codigoTipoEquipo;
     private String codigoEquipo;
-    private String tipoEquipo;
     private String codigoSala;
     private String detalle;
     private String estado;
@@ -21,22 +21,16 @@ public class Ticket implements Serializable {
 
     }
 
-    public Ticket(int codigoTicket, String rutUsuario, int codigoFalla, String codigoEquipo, String detalle, String estado, String rutTecnico) {
+    public Ticket(int codigoTicket, String rutUsuario, int codigoFalla, int codigoTipoEquipo, String codigoEquipo, String codigoSala, String detalle, String estado, String rutTecnico) {
         this.codigoTicket = codigoTicket;
         this.rutUsuario = rutUsuario;
         this.codigoFalla = codigoFalla;
+        this.codigoTipoEquipo = codigoTipoEquipo;
         this.codigoEquipo = codigoEquipo;
+        this.codigoSala = codigoSala;
         this.detalle = detalle;
         this.estado = estado;
         this.rutTecnico = rutTecnico;
-    }
-
-    public String getTipoEquipo() {
-        return tipoEquipo;
-    }
-
-    public void setTipoEquipo(String tipoEquipo) {
-        this.tipoEquipo = tipoEquipo;
     }
 
     public String getCodigoSala() {
@@ -69,6 +63,14 @@ public class Ticket implements Serializable {
 
     public void setCodigoFalla(int codigoFalla) {
         this.codigoFalla = codigoFalla;
+    }
+
+    public int getCodigoTipoEquipo() {
+        return codigoTipoEquipo;
+    }
+
+    public void setCodigoTipoEquipo(int codigoTipoEquipo) {
+        this.codigoTipoEquipo = codigoTipoEquipo;
     }
 
     public String getCodigoEquipo() {

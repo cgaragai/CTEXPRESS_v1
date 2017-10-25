@@ -7,16 +7,16 @@ package cl.android.trabajo.ctexpress.Modelo;
 public class Equipo {
     private String codigoEquipo;
     private String descripcion;
-    private String tipoEquipo;
+    private int codigoTipoEquipo;
     private String codigoSala;
 
     public Equipo() {
     }
 
-    public Equipo(String codigoEquipo, String descripcion, String tipoEquipo, String codigoSala) {
+    public Equipo(String codigoEquipo, String descripcion, int codigoTipoEquipo, String codigoSala) {
         this.codigoEquipo = codigoEquipo;
         this.descripcion = descripcion;
-        this.tipoEquipo = tipoEquipo;
+        this.codigoTipoEquipo = codigoTipoEquipo;
         this.codigoSala = codigoSala;
     }
 
@@ -36,12 +36,12 @@ public class Equipo {
         this.descripcion = descripcion;
     }
 
-    public String getTipoEquipo() {
-        return tipoEquipo;
+    public int getCodigoTipoEquipo() {
+        return codigoTipoEquipo;
     }
 
-    public void setTipoEquipo(String tipoEquipo) {
-        this.tipoEquipo = tipoEquipo;
+    public void setCodigoTipoEquipo(int codigoTipoEquipo) {
+        this.codigoTipoEquipo = codigoTipoEquipo;
     }
 
     public String getCodigoSala() {

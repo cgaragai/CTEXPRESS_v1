@@ -26,7 +26,7 @@ public class MantenedorEquipo {
         columnas = new ArrayList<String>();
         columnas.add("codigoEquipo");
         columnas.add("descripcion");
-        columnas.add("tipoEquipo");
+        columnas.add("codigoTipoEquipo");
         columnas.add("codigoSala");
 
     }
@@ -59,7 +59,7 @@ public class MantenedorEquipo {
         ArrayList<String> tipoEquipos = new ArrayList<>();
         this.conector = new DB_Helper(this.context);
         try {
-            String query = "SELECT distinct(tipoEquipo) FROM " + tabla + " WHERE codigoSala = '" + codigoSala + "'";
+            String query = "SELECT distinct(codigoTipoEquipo) FROM " + tabla + " WHERE codigoSala = '" + codigoSala + "'";
             Cursor resultado = this.conector.select(query);
             if (resultado.moveToFirst()) {
                 do {
@@ -75,11 +75,11 @@ public class MantenedorEquipo {
         return tipoEquipos;
     }
 
-    public ArrayList<String> getCodByCodSalaAndTipoEquipo(String codigoSala, String tipoEquipo) {
+    public ArrayList<String> getCodByCodSalaAndTipoEquipo(String codigoSala, int codigoTipoEquipo) {
         ArrayList<String> codigosEquipo = new ArrayList<>();
         this.conector = new DB_Helper(this.context);
         try {
-            String query = "SELECT codigoEquipo FROM " + tabla + " WHERE codigoSala = '" + codigoSala + "' AND tipoEquipo = '" + tipoEquipo + "'";
+            String query = "SELECT codigoEquipo FROM " + tabla + " WHERE codigoSala = '" + codigoSala + "' AND codigoTipoEquipo = " + codigoTipoEquipo ;
             Cursor resultado = this.conector.select(query);
             if (resultado.moveToFirst()) {
                 do {
@@ -199,7 +199,7 @@ public class MantenedorEquipo {
         Equipo equipo = new Equipo();
         equipo.setCodigoEquipo(resultado.getString(0));
         equipo.setDescripcion(resultado.getString(1));
-        equipo.setTipoEquipo(resultado.getString(2));
+        equipo.setCodigoTipoEquipo(resultado.getInt(2));
         equipo.setCodigoSala(resultado.getString(3));
         return equipo;
     }
@@ -208,7 +208,7 @@ public class MantenedorEquipo {
         ArrayList<String> valores = new ArrayList<String>();
         valores.add(equipo.getCodigoEquipo());
         valores.add(equipo.getDescripcion());
-        valores.add(equipo.getTipoEquipo());
+        valores.add(String.valueOf(equipo.getCodigoTipoEquipo()));
         valores.add(equipo.getCodigoSala());
         return valores;
     }
@@ -216,7 +216,7 @@ public class MantenedorEquipo {
     public void valoresEquipo(Equipo equipo){
         Log.i("getCodigoEquipo", equipo.getCodigoEquipo());
         Log.i("getDescripcion", equipo.getDescripcion());
-        Log.i("getTipoEquipo", equipo.getTipoEquipo());
+        Log.i("getCodigoTipoEquipo", String.valueOf(equipo.getCodigoTipoEquipo()));
         Log.i("getCodigoSala", equipo.getCodigoSala());
     }
 }
