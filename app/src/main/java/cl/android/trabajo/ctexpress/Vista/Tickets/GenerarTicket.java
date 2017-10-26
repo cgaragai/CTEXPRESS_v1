@@ -115,9 +115,9 @@ public class GenerarTicket extends AppCompatActivity implements AdapterView.OnIt
 
         MantenedorTicket negocioTicket = new MantenedorTicket(this);
         ticket.setRutUsuario(rut);
-        ticket.setTipoEquipo(String.valueOf(tipoEquipo.getSelectedItem()));
+        ticket.setCodigoTipoEquipo(getSoloCodigo(String.valueOf(tipoEquipo.getSelectedItem())));
         ticket.setCodigoSala(String.valueOf(sala.getSelectedItem()));
-        ticket.setCodigoFalla(getSoloIdFalla(String.valueOf(this.falla.getSelectedItem())));
+        ticket.setCodigoFalla(getSoloCodigo(String.valueOf(this.falla.getSelectedItem())));
         if(!codigoEquipo.equals("Desconocido"))ticket.setCodigoEquipo(codigoEquipo);
         ticket.setDetalle(etDetalle.getText().toString());
 
@@ -169,9 +169,9 @@ public class GenerarTicket extends AppCompatActivity implements AdapterView.OnIt
         tipoEquipo.setAdapter(getArrayAdapter(mantenedorEquipo.getAllTipoEquipoByCodigoSala(codigoSala), ""));
     }
 
-    private void cargarSpinnerCodigoEquipo(String codigoSala, String tipoEquipo){
+    private void cargarSpinnerCodigoEquipo(String codigoSala, int codigoTipoEquipo){
         MantenedorEquipo mantenedorEquipo = new MantenedorEquipo(this);
-        codigoEquipo.setAdapter(getArrayAdapter(mantenedorEquipo.getCodByCodSalaAndTipoEquipo(codigoSala, tipoEquipo), "Desconocido"));
+        codigoEquipo.setAdapter(getArrayAdapter(mantenedorEquipo.getCodByCodSalaAndTipoEquipo(codigoSala, codigoTipoEquipo), "Desconocido"));
     }
 
     private void cargarSpinnerEstado(){
@@ -231,7 +231,7 @@ public class GenerarTicket extends AppCompatActivity implements AdapterView.OnIt
                         ++cantidadEnabled;
                     } else {
                         MantenedorEquipo mantenedorEquipo = new MantenedorEquipo(this);
-                        this.codigoEquipo.setAdapter(getArrayAdapter(mantenedorEquipo.getCodByCodSalaAndTipoEquipo(String.valueOf(this.sala.getSelectedItem()), itemSelected), "Desconocido"));
+                        this.codigoEquipo.setAdapter(getArrayAdapter(mantenedorEquipo.getCodByCodSalaAndTipoEquipo(String.valueOf(this.sala.getSelectedItem()), getSoloCodigo(itemSelected)), "Desconocido"));
                         this.codigoEquipo.setEnabled(true);
                     }
                     ++cantidadEnabled;
@@ -359,8 +359,8 @@ public class GenerarTicket extends AppCompatActivity implements AdapterView.OnIt
             setSpinnerSelection(sala, auxSala.getCodigoSala());
             cargarSpinnerTipoEquipo(auxSala.getCodigoSala());
 
-            setSpinnerSelection(tipoEquipo, ticketLocal.getTipoEquipo());
-            cargarSpinnerCodigoEquipo(auxSala.getCodigoSala(), ticketLocal.getTipoEquipo());
+            setSpinnerSelection(tipoEquipo, String.valueOf(ticketLocal.getCodigoTipoEquipo()));
+            cargarSpinnerCodigoEquipo(auxSala.getCodigoSala(), ticketLocal.getCodigoTipoEquipo());
 
             setSpinnerSelection(codigoEquipo, auxEquipo.getCodigoEquipo());
 
@@ -382,7 +382,7 @@ public class GenerarTicket extends AppCompatActivity implements AdapterView.OnIt
     private void setSpinnerSelection(Spinner spinner, String seleccion){
         for(int i=0; i<spinner.getCount();i++) {
             String itemSpinner = String.valueOf(spinner.getItemAtPosition(i));
-            if(spinner == falla) itemSpinner = String.valueOf(getSoloIdFalla(itemSpinner));
+            if(spinner == falla || spinner == tipoEquipo) itemSpinner = String.valueOf(getSoloCodigo(itemSpinner));
 
             if(itemSpinner.equals(seleccion)){
                 spinner.setSelection(i);
@@ -391,8 +391,8 @@ public class GenerarTicket extends AppCompatActivity implements AdapterView.OnIt
         }
     }
 
-    private int getSoloIdFalla(String codAndDetalleFalla){
-        return Integer.parseInt(codAndDetalleFalla.split("-")[0]);
+    private int getSoloCodigo(String seleccion){
+        return Integer.parseInt(seleccion.split("-")[0]);
     }
 
     private void cambiarEstado(int v, boolean enable){

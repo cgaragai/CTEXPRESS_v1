@@ -59,11 +59,14 @@ public class MantenedorEquipo {
         ArrayList<String> tipoEquipos = new ArrayList<>();
         this.conector = new DB_Helper(this.context);
         try {
-            String query = "SELECT distinct(codigoTipoEquipo) FROM " + tabla + " WHERE codigoSala = '" + codigoSala + "'";
+            String query = "SELECT tipo_equipo.codigoTipoEquipo, tipo_equipo.nombre FROM " + tabla + " " +
+                    "INNER JOIN tipo_equipo ON " + tabla + ".codigoTipoEquipo = tipo_equipo.codigoTipoEquipo " +
+                    "WHERE codigoSala = '" + codigoSala + "' " +
+                    "GROUP BY tipo_equipo.codigoTipoEquipo";
             Cursor resultado = this.conector.select(query);
             if (resultado.moveToFirst()) {
                 do {
-                    String tipoEquipo = resultado.getString(0);
+                    String tipoEquipo = resultado.getString(0) + "-" + resultado.getString(1);
                     tipoEquipos.add(tipoEquipo);
                 } while (resultado.moveToNext());
             }
@@ -120,18 +123,18 @@ public class MantenedorEquipo {
             ArrayList<String> valores = new ArrayList<>();
             valores.add("AA001");
             valores.add("Modelo 001");
-            valores.add("Aire Acondicionado");
+            valores.add("1");
             valores.add("101");
             this.conector.insert(tabla, columnas, valores);
             valores.set(0, "CO001");
-            valores.set(2, "Computador");
+            valores.set(2, "2");
             this.conector.insert(tabla, columnas, valores);
             valores.set(0, "TE001");
-            valores.add(2, "Televisor");
+            valores.add(2, "3");
             valores.set(3, "102");
             this.conector.insert(tabla, columnas, valores);
             valores.set(0, "PO001");
-            valores.set(2, "Proyector");
+            valores.set(2, "4");
             valores.set(3, "103");
             this.conector.insert(tabla, columnas, valores);
             valores.set(0, "PO002");
@@ -139,29 +142,29 @@ public class MantenedorEquipo {
             valores.set(3, "201");
             this.conector.insert(tabla, columnas, valores);
             valores.set(0, "CO002");
-            valores.set(2, "Computador");
+            valores.set(2, "2");
             this.conector.insert(tabla, columnas, valores);
             valores.set(0, "TE002");
-            valores.set(2, "Televisor");
+            valores.set(2, "3");
             valores.set(3, "202");
             this.conector.insert(tabla, columnas, valores);
             valores.set(0, "AA002");
-            valores.set(2, "Aire Acondicionado");
+            valores.set(2, "1");
             valores.set(3, "301");
             this.conector.insert(tabla, columnas, valores);
             valores.set(0, "CO003");
             valores.set(1, "Modelo 003");
-            valores.set(2, "Computador");
+            valores.set(2, "2");
             this.conector.insert(tabla, columnas, valores);
             valores.set(0, "PO003");
-            valores.set(2, "Proyector");
+            valores.set(2, "4");
             valores.set(3, "L1");
             this.conector.insert(tabla, columnas, valores);
             valores.set(0, "AA003");
-            valores.set(2, "Aire Acondicionado");
+            valores.set(2, "1");
             this.conector.insert(tabla, columnas, valores);
             valores.set(0, "TE003");
-            valores.set(2, "Televisor");
+            valores.set(2, "3");
             valores.set(3, "L2");
             this.conector.insert(tabla, columnas, valores);
             valores.set(0, "TE004");
@@ -169,7 +172,7 @@ public class MantenedorEquipo {
             valores.set(3, "L3");
             this.conector.insert(tabla, columnas, valores);
             valores.set(0, "AA004");
-            valores.set(2, "Aire Acondicionado");
+            valores.set(2, "1");
             valores.set(3, "L4");
             this.conector.insert(tabla, columnas, valores);
             conector.close();

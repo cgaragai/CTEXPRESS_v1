@@ -14,9 +14,11 @@ import java.util.ArrayList;
 
 import cl.android.trabajo.ctexpress.Mantenedor.MantenedorEquipo;
 import cl.android.trabajo.ctexpress.Mantenedor.MantenedorFalla;
+import cl.android.trabajo.ctexpress.Mantenedor.MantenedorHistorialTicket;
 import cl.android.trabajo.ctexpress.Mantenedor.MantenedorSala;
 import cl.android.trabajo.ctexpress.Mantenedor.MantenedorSolucionPropuesta;
 import cl.android.trabajo.ctexpress.Mantenedor.MantenedorTicket;
+import cl.android.trabajo.ctexpress.Mantenedor.MantenedorTipoEquipo;
 import cl.android.trabajo.ctexpress.Mantenedor.MantenedorUsuario;
 import cl.android.trabajo.ctexpress.Modelo.Equipo;
 import cl.android.trabajo.ctexpress.Modelo.Falla;
@@ -42,6 +44,9 @@ public class Login extends AppCompatActivity {
 
         MantenedorSala mantenedorSala = new MantenedorSala(this);
         mantenedorSala.insertSalasIniciales();
+
+        MantenedorTipoEquipo mantenedorTipoEquipo = new MantenedorTipoEquipo(this);
+        mantenedorTipoEquipo.insertTipoEquiposIniciales();
 
         MantenedorEquipo mantenedorEquipo = new MantenedorEquipo(this);
         mantenedorEquipo.insertEquiposIniciales();
