@@ -43,6 +43,14 @@ public class Estadisticas extends AppCompatActivity implements AdapterView.OnIte
     }
 
     @Override
+    protected void onResume(){
+        super.onResume();
+        if(principal.getSelectedItemPosition() > 0)
+            if (detalle.isEnabled() && detalle.getSelectedItemPosition() > 0)
+                setListView();
+    }
+
+    @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         String tipoBusqueda = String.valueOf(adapterView.getItemAtPosition(i));
         Spinner spinner = (Spinner) findViewById(R.id.spDetalleBusquedaEstadistica);
@@ -81,6 +89,10 @@ public class Estadisticas extends AppCompatActivity implements AdapterView.OnIte
     }
 
     public void obtenerEstadisticas(View view) {
+        setListView();
+    }
+
+    private void setListView(){
         String posPrincipal = "";
         String posDetalle = "";
         ListView auxListView = (ListView) findViewById(R.id.listEstadistica);

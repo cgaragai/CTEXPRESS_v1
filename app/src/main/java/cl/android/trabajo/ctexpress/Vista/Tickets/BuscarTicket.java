@@ -8,6 +8,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import cl.android.trabajo.ctexpress.Mantenedor.MantenedorTicket;
 import cl.android.trabajo.ctexpress.Modelo.Ticket;
 import cl.android.trabajo.ctexpress.R;
@@ -17,79 +19,77 @@ import cl.android.trabajo.ctexpress.R;
  */
 
 public class BuscarTicket extends AppCompatActivity {
+
+    private int codigoBuscado;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.buscar_ticket);
-        ocultarLabel();
+        setVisibilityLabel(View.INVISIBLE);
+        codigoBuscado = -1;
     }
 
-    private void ocultarLabel(){
-        TextView codigoTicket = (TextView) findViewById(R.id.lblTicketID);
-        TextView usuario = (TextView) findViewById(R.id.lblTicketUsuario);
-        TextView tecnico = (TextView) findViewById(R.id.lblTecnico);
-        TextView codigoEquipo = (TextView) findViewById(R.id.lblCodigoEquipo);
-        TextView codigoFalla = (TextView) findViewById(R.id.lblCodigoFalla);
-        TextView detalle = (TextView) findViewById(R.id.lblDetalle);
-        TextView estado = (TextView) findViewById(R.id.lblEstado);
+    @Override
+    protected void onResume(){
+        super.onResume();
+        if(codigoBuscado >= 0) {
+            EditText buscarTicket = (EditText) findViewById(R.id.txtBuscarTicket);
+            buscarTicket.setText(String.valueOf(codigoBuscado));
+            verificarTicket();
+        }
+    }
 
-        codigoTicket.setVisibility(View.INVISIBLE);
-        usuario.setVisibility(View.INVISIBLE);
-        tecnico.setVisibility(View.INVISIBLE);
-        codigoEquipo.setVisibility(View.INVISIBLE);
-        codigoFalla.setVisibility(View.INVISIBLE);
-        detalle.setVisibility(View.INVISIBLE);
-        estado.setVisibility(View.INVISIBLE);
+    private void setVisibilityLabel(int visibility){
+        for(TextView auxTextView : getTextViews())
+            auxTextView.setVisibility(visibility);
+    }
+
+    private ArrayList<TextView> getTextViews(){
+        ArrayList<TextView> textViews = new ArrayList<>();
+        textViews.add((TextView) findViewById(R.id.lblTicketID));
+        textViews.add((TextView) findViewById(R.id.lblTicketUsuario));
+        textViews.add((TextView) findViewById(R.id.lblTecnico));
+        textViews.add((TextView) findViewById(R.id.lblCodigoEquipo));
+        textViews.add((TextView) findViewById(R.id.lblCodigoFalla));
+        textViews.add((TextView) findViewById(R.id.lblDetalle));
+        textViews.add((TextView) findViewById(R.id.lblEstado));
+
+        return  textViews;
     }
 
     public void buscarTicket(View view) {
-        TextView codigoTicket = (TextView) findViewById(R.id.lblTicketID);
-        TextView usuario = (TextView) findViewById(R.id.lblTicketUsuario);
-        TextView tecnico = (TextView) findViewById(R.id.lblTecnico);
-        TextView codigoEquipo = (TextView) findViewById(R.id.lblCodigoEquipo);
-        TextView codigoFalla = (TextView) findViewById(R.id.lblCodigoFalla);
-        TextView detalle = (TextView) findViewById(R.id.lblDetalle);
-        TextView estado = (TextView) findViewById(R.id.lblEstado);
         EditText buscarTicket = (EditText) findViewById(R.id.txtBuscarTicket);
         if (!buscarTicket.getText().toString().isEmpty()){
-            MantenedorTicket mantenedorTicket = new MantenedorTicket(this);
-            int codigoBuscado = Integer.valueOf(buscarTicket.getText().toString());
-            Ticket ticket = mantenedorTicket.getByCodigoTicket(codigoBuscado);
-            if (ticket != null){
-                codigoTicket.setText("Codigo ticket: "+ticket.getCodigoTicket());
-                usuario.setText("Usuario: "+ticket.getRutUsuario());
-                tecnico.setText("Tecnico: "+ticket.getRutTecnico());
-                codigoEquipo.setText("Codigo Equipo: "+ticket.getCodigoEquipo());
-                codigoFalla.setText("Codigo Falla: "+ticket.getCodigoFalla());
-                detalle.setText("Detalle Ticket: "+ticket.getDetalle());
-                estado.setText("Estado Ticket: "+ticket.getEstado());
-
-                habilitarLabel();
-            }
-            else{
-                this.mensaje("No existe el ticket buscado");
-                ocultarLabel();
-            }
+            codigoBuscado = Integer.valueOf(buscarTicket.getText().toString());
+            verificarTicket();
+        }else {
+            codigoBuscado = -1;
+            this.mensaje("Ingrese un campo válido");
         }
-        else {this.mensaje("Ingrese un campo valido");}
     }
 
-    private void habilitarLabel(){
-        TextView codigoTicket = (TextView) findViewById(R.id.lblTicketID);
-        TextView usuario = (TextView) findViewById(R.id.lblTicketUsuario);
-        TextView tecnico = (TextView) findViewById(R.id.lblTecnico);
-        TextView codigoEquipo = (TextView) findViewById(R.id.lblCodigoEquipo);
-        TextView codigoFalla = (TextView) findViewById(R.id.lblCodigoFalla);
-        TextView detalle = (TextView) findViewById(R.id.lblDetalle);
-        TextView estado = (TextView) findViewById(R.id.lblEstado);
+    private void verificarTicket(){
+        MantenedorTicket mantenedorTicket = new MantenedorTicket(this);
+        Ticket ticketBuscado = mantenedorTicket.getByCodigoTicket(codigoBuscado);
+        if (ticketBuscado != null){
+            setTextOfTextViews(ticketBuscado);
+            setVisibilityLabel(View.VISIBLE);
+        }else{
+            this.mensaje("No existe el ticket buscado");
+            setVisibilityLabel(View.INVISIBLE);
+        }
+    }
 
-        codigoTicket.setVisibility(View.VISIBLE);
-        usuario.setVisibility(View.VISIBLE);
-        tecnico.setVisibility(View.VISIBLE);
-        codigoEquipo.setVisibility(View.VISIBLE);
-        codigoFalla.setVisibility(View.VISIBLE);
-        detalle.setVisibility(View.VISIBLE);
-        estado.setVisibility(View.VISIBLE);
+    private void setTextOfTextViews(Ticket ticketBuscado){
+        ArrayList<TextView> textViews = getTextViews();
+        textViews.get(0).setText("Codigo ticket: "+ticketBuscado.getCodigoTicket());
+        textViews.get(1).setText("Usuario: "+ticketBuscado.getRutUsuario());
+        textViews.get(2).setText("Tecnico: "+ticketBuscado.getRutTecnico());
+        textViews.get(3).setText("Codigo Equipo: "+ticketBuscado.getCodigoEquipo());
+        textViews.get(4).setText("Codigo Falla: "+ticketBuscado.getCodigoFalla());
+        textViews.get(5).setText("Detalle Ticket: "+ticketBuscado.getDetalle());
+        textViews.get(6).setText("Estado Ticket: "+ticketBuscado.getEstado());
     }
 
     private void mensaje(String mensaje){
