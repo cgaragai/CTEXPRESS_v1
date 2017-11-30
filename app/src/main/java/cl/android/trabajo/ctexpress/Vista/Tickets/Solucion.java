@@ -6,18 +6,14 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Spinner;
 
 import java.util.ArrayList;
 
 import cl.android.trabajo.ctexpress.Adapters.AdapterSoluciones;
-import cl.android.trabajo.ctexpress.Adapters.AdapterTickets;
-import cl.android.trabajo.ctexpress.Mantenedor.MantenedorFalla;
-import cl.android.trabajo.ctexpress.Mantenedor.MantenedorSolucionPropuesta;
-import cl.android.trabajo.ctexpress.Mantenedor.MantenedorTicket;
+import cl.android.trabajo.ctexpress.Mantenedor.SQLite.MantenedorFalla;
+import cl.android.trabajo.ctexpress.Mantenedor.SQLite.MantenedorSolucionPropuesta;
+import cl.android.trabajo.ctexpress.Mantenedor.SQLite.MantenedorTicket;
 import cl.android.trabajo.ctexpress.Modelo.Falla;
 import cl.android.trabajo.ctexpress.Modelo.SolucionPropuesta;
 import cl.android.trabajo.ctexpress.Modelo.Ticket;

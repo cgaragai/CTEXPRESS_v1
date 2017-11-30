@@ -14,10 +14,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import cl.android.trabajo.ctexpress.Mantenedor.MantenedorTicket;
+import cl.android.trabajo.ctexpress.Mantenedor.SQLite.MantenedorTicket;
 import cl.android.trabajo.ctexpress.Modelo.Ticket;
 import cl.android.trabajo.ctexpress.R;
-import cl.android.trabajo.ctexpress.Vista.Tickets.Solucion;
 
 /**
  * Created by Leonardo on 06-10-2017.

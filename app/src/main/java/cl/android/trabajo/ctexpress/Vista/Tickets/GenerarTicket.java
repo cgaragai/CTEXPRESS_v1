@@ -16,12 +16,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Date;
 
-import cl.android.trabajo.ctexpress.Mantenedor.MantenedorEquipo;
-import cl.android.trabajo.ctexpress.Mantenedor.MantenedorFalla;
-import cl.android.trabajo.ctexpress.Mantenedor.MantenedorSala;
-import cl.android.trabajo.ctexpress.Mantenedor.MantenedorTicket;
-import cl.android.trabajo.ctexpress.Mantenedor.MantenedorUsuario;
+import cl.android.trabajo.ctexpress.Mantenedor.MongoDB.MantenedorTicketMongoDB;
+import cl.android.trabajo.ctexpress.Mantenedor.SQLite.MantenedorEquipo;
+import cl.android.trabajo.ctexpress.Mantenedor.SQLite.MantenedorFalla;
+import cl.android.trabajo.ctexpress.Mantenedor.SQLite.MantenedorSala;
+import cl.android.trabajo.ctexpress.Mantenedor.SQLite.MantenedorTicket;
+import cl.android.trabajo.ctexpress.Mantenedor.SQLite.MantenedorUsuario;
 import cl.android.trabajo.ctexpress.Modelo.Equipo;
 import cl.android.trabajo.ctexpress.Modelo.Sala;
 import cl.android.trabajo.ctexpress.Modelo.Ticket;
@@ -136,6 +138,13 @@ public class GenerarTicket extends AppCompatActivity implements AdapterView.OnIt
                 ticket.setEstado("Creado");
             int id = negocioTicket.insert(ticket);
             if (id > -1) ticket.setCodigoTicket(id);
+            Log.i("Ingresando... ", "OK");
+            MantenedorTicketMongoDB mantenedorTicket = new MantenedorTicketMongoDB(this);
+            mantenedorTicket.setMethod_name("insertarTicket");
+            Date date = new Date();
+            mantenedorTicket.execute(String.valueOf(ticket.getCodigoTicket()), ticket.getRutUsuario(), String.valueOf(ticket.getCodigoFalla()),
+                    String.valueOf(ticket.getCodigoTipoEquipo()), ticket.getCodigoEquipo(), ticket.getCodigoSala(), ticket.getDetalle(),
+                    ticket.getEstado(), date.toString(), "Ticket creado");
         }
 
         return ticket;

@@ -1,4 +1,4 @@
-package cl.android.trabajo.ctexpress.Mantenedor;
+package cl.android.trabajo.ctexpress.Mantenedor.SQLite;
 
 import android.content.ContentValues;
 import android.content.Context;

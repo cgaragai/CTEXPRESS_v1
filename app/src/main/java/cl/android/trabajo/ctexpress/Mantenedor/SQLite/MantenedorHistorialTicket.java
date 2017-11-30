@@ -1,4 +1,4 @@
-package cl.android.trabajo.ctexpress.Mantenedor;
+package cl.android.trabajo.ctexpress.Mantenedor.SQLite;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import cl.android.trabajo.ctexpress.Mantenedor.SQLite.DB_Helper;
 import cl.android.trabajo.ctexpress.Modelo.HistorialTicket;
 
 /**

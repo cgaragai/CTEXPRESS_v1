@@ -9,7 +9,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import cl.android.trabajo.ctexpress.Adapters.AdapterUsuarios;
-import cl.android.trabajo.ctexpress.Mantenedor.MantenedorUsuario;
+import cl.android.trabajo.ctexpress.Mantenedor.SQLite.MantenedorUsuario;
 import cl.android.trabajo.ctexpress.Modelo.Usuario;
 import cl.android.trabajo.ctexpress.R;
 

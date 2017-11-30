@@ -1,11 +1,11 @@
-package cl.android.trabajo.ctexpress.Mantenedor;
+package cl.android.trabajo.ctexpress.Mantenedor.SQLite;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 
 import java.util.ArrayList;
 
+import cl.android.trabajo.ctexpress.Mantenedor.SQLite.DB_Helper;
 import cl.android.trabajo.ctexpress.Modelo.Usuario;
 
 /**

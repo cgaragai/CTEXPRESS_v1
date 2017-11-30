@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import cl.android.trabajo.ctexpress.Mantenedor.MantenedorFalla;
+import cl.android.trabajo.ctexpress.Mantenedor.SQLite.MantenedorFalla;
 import cl.android.trabajo.ctexpress.Modelo.Ticket;
 import cl.android.trabajo.ctexpress.R;
 

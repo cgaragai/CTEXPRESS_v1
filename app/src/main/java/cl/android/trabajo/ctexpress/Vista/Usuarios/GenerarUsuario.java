@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import java.util.regex.Pattern;
 
-import cl.android.trabajo.ctexpress.Mantenedor.MantenedorUsuario;
+import cl.android.trabajo.ctexpress.Mantenedor.SQLite.MantenedorUsuario;
 import cl.android.trabajo.ctexpress.Modelo.Usuario;
 import cl.android.trabajo.ctexpress.R;
 

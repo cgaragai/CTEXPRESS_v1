@@ -8,12 +8,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import cl.android.trabajo.ctexpress.Mantenedor.MantenedorEquipo;
-import cl.android.trabajo.ctexpress.Mantenedor.MantenedorFalla;
-import cl.android.trabajo.ctexpress.Mantenedor.MantenedorSala;
-import cl.android.trabajo.ctexpress.Mantenedor.MantenedorSolucionPropuesta;
-import cl.android.trabajo.ctexpress.Mantenedor.MantenedorTipoEquipo;
-import cl.android.trabajo.ctexpress.Mantenedor.MantenedorUsuario;
+import cl.android.trabajo.ctexpress.Mantenedor.MongoDB.MantenedorTicketMongoDB;
+import cl.android.trabajo.ctexpress.Mantenedor.SQLite.MantenedorEquipo;
+import cl.android.trabajo.ctexpress.Mantenedor.SQLite.MantenedorFalla;
+import cl.android.trabajo.ctexpress.Mantenedor.SQLite.MantenedorSala;
+import cl.android.trabajo.ctexpress.Mantenedor.SQLite.MantenedorSolucionPropuesta;
+import cl.android.trabajo.ctexpress.Mantenedor.SQLite.MantenedorTipoEquipo;
+import cl.android.trabajo.ctexpress.Mantenedor.SQLite.MantenedorUsuario;
 import cl.android.trabajo.ctexpress.Modelo.Usuario;
 import cl.android.trabajo.ctexpress.Vista.Main.MainAdmin;
 import cl.android.trabajo.ctexpress.Vista.Main.MainAdministrativo;
@@ -48,13 +49,7 @@ public class Login extends AppCompatActivity {
         MantenedorFalla mantenedorFalla = new MantenedorFalla(this);
         mantenedorFalla.insertFallasIniciales();
 
-        /*MantenedorTicket mantenedorTicket = new MantenedorTicket(this);
-        ArrayList<Ticket> tickets = mantenedorTicket.getAll();
-        if(!tickets.isEmpty()){
-            for(Ticket ticket:tickets){
-                Log.i("Ticket", String.valueOf(ticket.getCodigoTicket()) + " " + ticket.getEstado());
-            }
-        }*/
+
     }
 
     public void ingresar(View view) {

@@ -3,8 +3,6 @@ package cl.android.trabajo.ctexpress.Vista.Tickets;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,7 +12,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import cl.android.trabajo.ctexpress.Adapters.AdapterTickets;
-import cl.android.trabajo.ctexpress.Mantenedor.MantenedorTicket;
+import cl.android.trabajo.ctexpress.Mantenedor.SQLite.MantenedorTicket;
 import cl.android.trabajo.ctexpress.Modelo.Ticket;
 import cl.android.trabajo.ctexpress.R;
 import cl.android.trabajo.ctexpress.Vista.Main.MainAdmin;
