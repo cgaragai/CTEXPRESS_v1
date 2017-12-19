@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import java.util.regex.Pattern;
 
+import cl.android.trabajo.ctexpress.Mantenedor.ConexionInternet.ConexionInternet;
+import cl.android.trabajo.ctexpress.Mantenedor.MongoDB.MantenedorUsuarioMongoDB;
 import cl.android.trabajo.ctexpress.Mantenedor.SQLite.MantenedorUsuario;
 import cl.android.trabajo.ctexpress.Modelo.Usuario;
 import cl.android.trabajo.ctexpress.R;
@@ -50,6 +52,8 @@ public class GenerarUsuario extends AppCompatActivity {
     }*/
 
     public void guardarUsuario(View view) {
+        ConexionInternet ci = new ConexionInternet();
+        MantenedorUsuarioMongoDB auxMongo = new MantenedorUsuarioMongoDB();
 
         try {
             String mensaje = "Debe ingresar todos los campos";
@@ -89,16 +93,20 @@ public class GenerarUsuario extends AppCompatActivity {
                                                     boolean updateOk = auxNegocio.update(dtoUsuario);
                                                     if (updateOk) mensaje = "Usuario Actualizado";
                                                 } else {
-                                                    boolean insertOk = auxNegocio.insert(dtoUsuario);
-                                                    if (insertOk) {
-                                                        mensaje = "Usuario Guardado";
+                                                    if (ci.verificarConexion(this)) {
+                                                        auxMongo.execute(dtoUsuario.getRut().toString(),dtoUsuario.getNombre().toString(),dtoUsuario.getApellido().toString(),dtoUsuario.getCorreo().toString(),dtoUsuario.getClave().toString(),dtoUsuario.getTipoUsuario().toString());
+                                                    } else {
+                                                        boolean insertOk = auxNegocio.insert(dtoUsuario);
+                                                        if (insertOk) {
+                                                            mensaje = "Usuario Guardado";
 
-                                                        etRut.setText("");
-                                                        nombre.setText("");
-                                                        apellido.setText("");
-                                                        correo.setText("");
-                                                        clave.setText("");
-                                                        tipoUsuario.setSelection(0);
+                                                            etRut.setText("");
+                                                            nombre.setText("");
+                                                            apellido.setText("");
+                                                            correo.setText("");
+                                                            clave.setText("");
+                                                            tipoUsuario.setSelection(0);
+                                                        }
                                                     }
                                                 }
                                             } else {

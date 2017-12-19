@@ -5,10 +5,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
-import org.bson.BsonArray;
-import org.bson.BsonDocument;
-import org.bson.BsonString;
-
 import cl.android.trabajo.ctexpress.Vista.Tickets.GenerarTicket;
 
 /**
