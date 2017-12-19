@@ -94,7 +94,9 @@ public class GenerarUsuario extends AppCompatActivity {
                                                     if (updateOk) mensaje = "Usuario Actualizado";
                                                 } else {
                                                     if (ci.verificarConexion(this)) {
+                                                        auxMongo.setMethod_name("insertarUsuario");
                                                         auxMongo.execute(dtoUsuario.getRut().toString(),dtoUsuario.getNombre().toString(),dtoUsuario.getApellido().toString(),dtoUsuario.getCorreo().toString(),dtoUsuario.getClave().toString(),dtoUsuario.getTipoUsuario().toString());
+
                                                     } else {
                                                         boolean insertOk = auxNegocio.insert(dtoUsuario);
                                                         if (insertOk) {
